@@ -10,10 +10,10 @@ export class UsuarioRepository{
     private async createTable() {
         const query = `
         CREATE TABLE IF NOT EXISTS usuario (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            idPessoa INT FOREING KEY,
-            senha VARCHAR(255) NOT NULL
-            )`;
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        idPessoa INT NOT NULL,
+        senha VARCHAR(255) NOT NULL,
+    )`;
 
             try{
                 const resultado = await executarComandoSQL(query, []);
@@ -119,7 +119,7 @@ export class UsuarioRepository{
         }
     }
 
-
+    
 
 }
 

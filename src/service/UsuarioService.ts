@@ -27,6 +27,7 @@ export class UsuarioService{
         return novoUsuario;
     }
 
+
     async atualizarUsuario(usuarioData: any): Promise<UsuarioEntity> {
         const {id, idPessoa, senha} = usuarioData;
 

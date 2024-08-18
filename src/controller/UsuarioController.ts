@@ -20,7 +20,8 @@ export class UsuarioController extends Controller {
             const usuario = await this.usuarioService.cadastrarUsuario(dto);
             return sucess(201, new BasicResponseDto("Usuario criado com sucesso!", usuario));
         } catch(error:any){
-            return fail(400, new BasicResponseDto(error.message, undefined));
+            const mensagemErro = error.message || 'Erro ao cadastrar usuário.';
+            return fail(400, new BasicResponseDto(mensagemErro, undefined));
         }
     }
 
