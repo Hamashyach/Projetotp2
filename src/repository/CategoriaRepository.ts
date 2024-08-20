@@ -9,7 +9,7 @@ export class CategoriaRepository{
 
     private async createTable(){
         const query = `
-        CREATE TABLE IF NOT EXIXTS categoria(
+        CREATE TABLE IF NOT EXISTS categoria(
             id INT AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(255)NOT NULL
             )`;

@@ -9,19 +9,21 @@ export class UsuarioRepository{
 
     private async createTable() {
         const query = `
-        CREATE TABLE IF NOT EXISTS usuario (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        idPessoa INT NOT NULL,
-        senha VARCHAR(255) NOT NULL,
-    )`;
+            CREATE TABLE IF NOT EXISTS usuario (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                idPessoa INT NOT NULL,
+                senha VARCHAR(255) NOT NULL,
+                FOREIGN KEY (idPessoa) REFERENCES pessoa(id)
+            )
+         `;
 
-            try{
-                const resultado = await executarComandoSQL(query, []);
-                console.log('Query executada com sucesso', resultado);
+        try{
+            const resultado = await executarComandoSQL(query, []);
+            console.log('Query executada com sucesso', resultado);
 
-            }catch (err){
+        }catch (err){
                 console.error('Erro');
-            }
+        }
             
     }
 

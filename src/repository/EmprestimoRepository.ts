@@ -10,13 +10,15 @@ export class EmprestimoRepository{
 
     private async createTable(){
         const query = `
-        CREATE TABLE IF NOT EXISTS  emprestimo (
+        CREATE TABLE IF NOT EXISTS emprestimo (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            livroId INT FOREING KEY NOT NULL,
-            usuarioId INT FOREING KEY NOT NULL,
+            livroId INT NOT NULL,
+            usuarioId INT NOT NULL,
             dataEmprestimo DATE NOT NULL,
-            dataDevolucao DATE NOT NULL
-            )`;
+            dataDevolucao DATE NOT NULL,
+            FOREIGN KEY (livroId) REFERENCES livro(id),
+            FOREIGN KEY (usuarioId) REFERENCES usuario(id)
+        )`;
 
             try {
                 const resultado = await executarComandoSQL(query, []);
@@ -31,7 +33,7 @@ export class EmprestimoRepository{
 
         try {
             const resultado = await executarComandoSQL(query, [emprestimo.livroId, emprestimo.usuarioId, emprestimo.dataEmprestimo, emprestimo.dataDevolucao]);
-            console.log('Produto inserido com sucesso, ID: ', resultado.insertId);
+            console.log('Emprestimo inserido com sucesso, ID: ', resultado.insertId);
             emprestimo.id = resultado.insertId;
             return new Promise<EmprestimoEntity>((resolve)=>{
                 resolve(emprestimo);

@@ -9,12 +9,13 @@ export class LivroRepository{
 
     private async createTable(){
         const query = `
-        CREATE TABLE IF NOT EXISTS livro(
+        CREATE TABLE IF NOT EXISTS livro (
             id INT AUTO_INCREMENT PRIMARY KEY,
             titulo VARCHAR(255) NOT NULL,
             autor VARCHAR(255) NOT NULL,
-            categoriaId INT  FOREIGN KEY NOT NULL,
-            )`;
+            categoriaId INT,
+            FOREIGN KEY (categoriaId) REFERENCES categoria(id)
+        )`;
     
 
         try {
