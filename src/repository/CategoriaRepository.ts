@@ -32,7 +32,7 @@ export class CategoriaRepository{
             return new Promise<CategoriaEntity>((resolve)=>{
                 resolve(categoria);
             })
-        } catch (err) {
+        } catch (err: any) {
             console.error('Erro ao inserir a categoria:', err);
             throw err;
         }

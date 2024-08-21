@@ -66,7 +66,7 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "LivroResquestDto": {
+    "LivroRequestDto": {
         "dataType": "refObject",
         "properties": {
             "titulo": {"dataType":"string","required":true},
@@ -152,7 +152,7 @@ export function RegisterRoutes(app: Router) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
                     dto: {"in":"body","name":"dto","required":true,"ref":"UsuarioRequestDto"},
                     fail: {"in":"res","name":"400","required":true,"ref":"BasicResponseDto"},
-                    sucess: {"in":"res","name":"201","required":true,"ref":"BasicResponseDto"},
+                    success: {"in":"res","name":"201","required":true,"ref":"BasicResponseDto"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -500,7 +500,7 @@ export function RegisterRoutes(app: Router) {
 
             async function LivroController_cadastrarLivro(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
-                    dto: {"in":"body","name":"dto","required":true,"ref":"LivroResquestDto"},
+                    dto: {"in":"body","name":"dto","required":true,"ref":"LivroRequestDto"},
                     fail: {"in":"res","name":"400","required":true,"ref":"BasicResponseDto"},
                     success: {"in":"res","name":"201","required":true,"ref":"BasicResponseDto"},
             };
@@ -590,14 +590,14 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/livro/id/:id',
+        app.get('/livro/id',
             ...(fetchMiddlewares<RequestHandler>(LivroController)),
-            ...(fetchMiddlewares<RequestHandler>(LivroController.prototype.filtrarLivroPorId)),
+            ...(fetchMiddlewares<RequestHandler>(LivroController.prototype.filtrarLivroById)),
 
-            async function LivroController_filtrarLivroPorId(request: ExRequest, response: ExResponse, next: any) {
+            async function LivroController_filtrarLivroById(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
-                    id: {"in":"path","name":"id","required":true,"dataType":"double"},
-                    notFound: {"in":"res","name":"400","required":true,"ref":"BasicResponseDto"},
+                    id: {"in":"query","name":"id","required":true,"dataType":"double"},
+                    notFound: {"in":"res","name":"404","required":true,"ref":"BasicResponseDto"},
                     success: {"in":"res","name":"200","required":true,"ref":"BasicResponseDto"},
             };
 
@@ -610,7 +610,39 @@ export function RegisterRoutes(app: Router) {
                 const controller = new LivroController();
 
               await templateService.apiHandler({
-                methodName: 'filtrarLivroPorId',
+                methodName: 'filtrarLivroById',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/livro/titulo',
+            ...(fetchMiddlewares<RequestHandler>(LivroController)),
+            ...(fetchMiddlewares<RequestHandler>(LivroController.prototype.filtrarLivroByTitulo)),
+
+            async function LivroController_filtrarLivroByTitulo(request: ExRequest, response: ExResponse, next: any) {
+            const args: Record<string, TsoaRoute.ParameterSchema> = {
+                    titulo: {"in":"query","name":"titulo","required":true,"dataType":"string"},
+                    notFound: {"in":"res","name":"404","required":true,"ref":"BasicResponseDto"},
+                    success: {"in":"res","name":"200","required":true,"ref":"BasicResponseDto"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args, request, response });
+
+                const controller = new LivroController();
+
+              await templateService.apiHandler({
+                methodName: 'filtrarLivroByTitulo',
                 controller,
                 response,
                 next,
@@ -624,43 +656,11 @@ export function RegisterRoutes(app: Router) {
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/livro',
             ...(fetchMiddlewares<RequestHandler>(LivroController)),
-            ...(fetchMiddlewares<RequestHandler>(LivroController.prototype.filtrarLivroPorTitulo)),
-
-            async function LivroController_filtrarLivroPorTitulo(request: ExRequest, response: ExResponse, next: any) {
-            const args: Record<string, TsoaRoute.ParameterSchema> = {
-                    titulo: {"in":"query","name":"titulo","required":true,"dataType":"string"},
-                    notFound: {"in":"res","name":"400","required":true,"ref":"BasicResponseDto"},
-                    success: {"in":"res","name":"200","required":true,"ref":"BasicResponseDto"},
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = templateService.getValidatedArgs({ args, request, response });
-
-                const controller = new LivroController();
-
-              await templateService.apiHandler({
-                methodName: 'filtrarLivroPorTitulo',
-                controller,
-                response,
-                next,
-                validatedArgs,
-                successStatus: undefined,
-              });
-            } catch (err) {
-                return next(err);
-            }
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/livro/all',
-            ...(fetchMiddlewares<RequestHandler>(LivroController)),
             ...(fetchMiddlewares<RequestHandler>(LivroController.prototype.listarTodosLivros)),
 
             async function LivroController_listarTodosLivros(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
-                    notFound: {"in":"res","name":"400","required":true,"ref":"BasicResponseDto"},
+                    notFound: {"in":"res","name":"404","required":true,"ref":"BasicResponseDto"},
                     success: {"in":"res","name":"200","required":true,"ref":"BasicResponseDto"},
             };
 

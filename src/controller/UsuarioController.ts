@@ -1,39 +1,37 @@
 import { UsuarioService } from "../service/UsuarioService";
-import { UsuarioEntity } from "../model/entity/UsuarioEntity";
-import { UsuarioDto } from "../model/dto/UsuarioDto";
-import { BasicResponseDto } from "../model/dto/BasicResponseDto";
 import { UsuarioRequestDto } from "../model/dto/UsuarioRequestDto";
-import { Body, Controller, Delete, Get, Path, Post, Put, Query, Res, Route, Tags, TsoaResponse } from "tsoa";
+import { BasicResponseDto } from "../model/dto/BasicResponseDto";
+import { UsuarioDto } from "../model/dto/UsuarioDto";
+import { Body, Controller, Delete, Get, Path, Post, Put, Res, Route, Tags, TsoaResponse } from "tsoa";
 
 @Route("usuario")
 @Tags("Usuario")
 export class UsuarioController extends Controller {
-    usuarioService = new UsuarioService();
+    private usuarioService = new UsuarioService();
 
     @Post()
     async cadastrarUsuario(
         @Body() dto: UsuarioRequestDto,
         @Res() fail: TsoaResponse<400, BasicResponseDto>,
-        @Res() sucess: TsoaResponse<201, BasicResponseDto>
+        @Res() success: TsoaResponse<201, BasicResponseDto>
     ): Promise<void> {
         try {
             const usuario = await this.usuarioService.cadastrarUsuario(dto);
-            return sucess(201, new BasicResponseDto("Usuario criado com sucesso!", usuario));
-        } catch(error:any){
-            const mensagemErro = error.message || 'Erro ao cadastrar usuário.';
-            return fail(400, new BasicResponseDto(mensagemErro, undefined));
+            return success(201, new BasicResponseDto("Usuário criado com sucesso!", usuario));
+        } catch (error: any) {
+            return fail(400, new BasicResponseDto(error.message, undefined));
         }
     }
 
     @Put()
     async atualizarUsuario(
-        @Body() dto: UsuarioDto, 
+        @Body() dto: UsuarioDto,
         @Res() notFound: TsoaResponse<400, BasicResponseDto>,
         @Res() success: TsoaResponse<200, BasicResponseDto>
     ): Promise<void> {
         try {
             const usuario = await this.usuarioService.atualizarUsuario(dto);
-            return success(200, new BasicResponseDto("Usuario atualizado com sucesso!", usuario));
+            return success(200, new BasicResponseDto("Usuário atualizado com sucesso!", usuario));
         } catch (error: any) {
             return notFound(400, new BasicResponseDto(error.message, undefined));
         }
@@ -46,8 +44,8 @@ export class UsuarioController extends Controller {
         @Res() success: TsoaResponse<200, BasicResponseDto>
     ): Promise<void> {
         try {
-            const usuario = await this.usuarioService.deletarusuario(dto);
-            return success(200, new BasicResponseDto("usuario deletado com sucesso!", usuario));
+            const usuario = await this.usuarioService.deletarUsuario(dto);
+            return success(200, new BasicResponseDto("Usuário deletado com sucesso!", usuario));
         } catch (error: any) {
             return notFound(400, new BasicResponseDto(error.message, undefined));
         }
@@ -61,7 +59,11 @@ export class UsuarioController extends Controller {
     ): Promise<void> {
         try {
             const usuario = await this.usuarioService.filtrarUsuarioById(id);
-            return success(200, new BasicResponseDto("Usuario encontrado!", usuario));
+            if (usuario) {
+                return success(200, new BasicResponseDto("Usuário encontrado!", usuario));
+            } else {
+                return notFound(400, new BasicResponseDto("Usuário não encontrado.", undefined));
+            }
         } catch (error: any) {
             return notFound(400, new BasicResponseDto(error.message, undefined));
         }
@@ -73,8 +75,8 @@ export class UsuarioController extends Controller {
         @Res() success: TsoaResponse<200, BasicResponseDto>
     ): Promise<void> {
         try {
-            const usuario: UsuarioEntity[] = await this.usuarioService.listarTodosUsuarios();
-            return success(200, new BasicResponseDto("Usuarios listados com sucesso!", usuario));
+            const usuarios = await this.usuarioService.listarTodosUsuarios();
+            return success(200, new BasicResponseDto("Usuários listados com sucesso!", usuarios));
         } catch (error: any) {
             return notFound(400, new BasicResponseDto(error.message, undefined));
         }

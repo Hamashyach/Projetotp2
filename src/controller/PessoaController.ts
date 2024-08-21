@@ -8,7 +8,7 @@ import { Body, Controller, Delete, Get, Path, Post, Put, Query, Res, Route, Tags
 @Route("pessoa")
 @Tags("Pessoa")
 export class PessoaController extends Controller {
-    pessoaService = new PessoaService();
+    private pessoaService = new PessoaService();
 
     @Post()
     async cadastrarPessoa(
@@ -18,7 +18,7 @@ export class PessoaController extends Controller {
     ): Promise<void> {
         try {
             const pessoa = await this.pessoaService.cadastrarPessoa(dto);
-            return success(201, new BasicResponseDto("Pessoa criado com sucesso!", pessoa));
+            return success(201, new BasicResponseDto("Pessoa criada com sucesso!", pessoa));
         } catch (error: any) {
             return fail(400, new BasicResponseDto(error.message, undefined));
         }
@@ -32,7 +32,7 @@ export class PessoaController extends Controller {
     ): Promise<void> {
         try {
             const pessoa = await this.pessoaService.atualizarPessoa(dto);
-            return success(200, new BasicResponseDto("Pessoa atualizado com sucesso!", pessoa));
+            return success(200, new BasicResponseDto("Pessoa atualizada com sucesso!", pessoa));
         } catch (error: any) {
             return notFound(400, new BasicResponseDto(error.message, undefined));
         }
@@ -46,7 +46,7 @@ export class PessoaController extends Controller {
     ): Promise<void> {
         try {
             const pessoa = await this.pessoaService.deletarPessoa(dto);
-            return success(200, new BasicResponseDto("Pessoa deletado com sucesso!", pessoa));
+            return success(200, new BasicResponseDto("Pessoa deletada com sucesso!", pessoa));
         } catch (error: any) {
             return notFound(400, new BasicResponseDto(error.message, undefined));
         }
@@ -60,7 +60,11 @@ export class PessoaController extends Controller {
     ): Promise<void> {
         try {
             const pessoa = await this.pessoaService.filtrarPessoaById(id);
-            return success(200, new BasicResponseDto("Pessoa encontrado!", pessoa));
+            if (pessoa) {
+                return success(200, new BasicResponseDto("Pessoa encontrada!", pessoa));
+            } else {
+                return notFound(400, new BasicResponseDto("Pessoa não encontrada", undefined));
+            }
         } catch (error: any) {
             return notFound(400, new BasicResponseDto(error.message, undefined));
         }
@@ -73,8 +77,8 @@ export class PessoaController extends Controller {
         @Res() success: TsoaResponse<200, BasicResponseDto>
     ): Promise<void> {
         try {
-            const pessoa: PessoaEntity[] = await this.pessoaService.filtrarPessoaByName(name);
-            return success(200, new BasicResponseDto("Pessoa encontrado!", pessoa));
+            const pessoas = await this.pessoaService.filtrarPessoaByName(name);
+            return success(200, new BasicResponseDto("Pessoas encontradas!", pessoas));
         } catch (error: any) {
             return notFound(400, new BasicResponseDto(error.message, undefined));
         }
@@ -86,8 +90,8 @@ export class PessoaController extends Controller {
         @Res() success: TsoaResponse<200, BasicResponseDto>
     ): Promise<void> {
         try {
-            const pessoa: PessoaEntity[] = await this.pessoaService.listarTodasPessoas();
-            return success(200, new BasicResponseDto("Pessoas listadas com sucesso!", pessoa));
+            const pessoas = await this.pessoaService.listarTodasPessoas();
+            return success(200, new BasicResponseDto("Pessoas listadas com sucesso!", pessoas));
         } catch (error: any) {
             return notFound(400, new BasicResponseDto(error.message, undefined));
         }

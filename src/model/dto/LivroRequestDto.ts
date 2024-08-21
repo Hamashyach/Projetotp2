@@ -1,4 +1,4 @@
-export class LivroResquestDto{
+export class LivroRequestDto {
     titulo: string;
     autor: string;
     categoriaId: number;
