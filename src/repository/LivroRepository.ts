@@ -1,12 +1,9 @@
 import { executarComandoSQL } from "../database/mysql";
 import { LivroEntity } from "../model/entity/LivroEntity";
-import { CategoriaRepository } from "./CategoriaRepository";
 
 export class LivroRepository {
-    private categoriaRepository: CategoriaRepository;
 
     constructor() {
-        this.categoriaRepository = new CategoriaRepository();
         this.createTable();
     }
 
@@ -16,7 +13,7 @@ export class LivroRepository {
             id INT AUTO_INCREMENT PRIMARY KEY,
             titulo VARCHAR(255) NOT NULL,
             autor VARCHAR(255) NOT NULL,
-            categoriaId INT,
+            categoriaId INT NOT NULL,
             FOREIGN KEY (categoriaId) REFERENCES categoria(id)
         )`;
 
@@ -24,34 +21,26 @@ export class LivroRepository {
             const resultado = await executarComandoSQL(query, []);
             console.log('Query executada com sucesso: ', resultado);
         } catch (err) {
-            console.error('Error ao criar tabela:', err);
+            console.error('Error');
         }
     }
 
     async insertLivro(livro: LivroEntity): Promise<LivroEntity> {
-        try {
-            const categoria = await this.categoriaRepository.filterCategoriaById(livro.categoriaId);
-            if (!categoria) {
-                throw new Error(`Categoria com ID ${livro.categoriaId} não encontrada.`);
-            }
-        } catch (err) {
-            console.error('Erro ao verificar a existência da categoria:', err);
-            throw err;
-        }
-
         const query = "INSERT INTO livro (titulo, autor, categoriaId) VALUES (?, ?, ?)";
 
         try {
             const resultado = await executarComandoSQL(query, [livro.titulo, livro.autor, livro.categoriaId]);
             console.log('Livro inserido com sucesso, ID: ', resultado.insertId);
             livro.id = resultado.insertId;
-            return livro;
+            return new Promise<LivroEntity>((resolve)=>{
+                resolve(livro);
+            });
         } catch (err: any) {
                 console.error(`Falha ao inserir o livro: Categoria com ID ${livro.categoriaId} não encontrada.`);
                 throw err;
             } 
                 
-            }
+    }
 
     async updateLivro(livro: LivroEntity): Promise<LivroEntity> {
         const query = "UPDATE livro SET titulo = ?, autor = ?, categoriaId = ? WHERE id = ?";

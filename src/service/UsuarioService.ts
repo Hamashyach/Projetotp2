@@ -14,11 +14,6 @@ export class UsuarioService {
             throw new Error(`Pessoa com ID ${idPessoa} não existe.`);
         }
 
-        const usuarioExistente = await this.usuarioRepository.filterUsuarioByIdPessoa(idPessoa);
-        if (usuarioExistente) {
-            throw new Error(`Usuário para a pessoa com ID ${idPessoa} já existe.`);
-        }
-
         const usuario = new UsuarioEntity(undefined, idPessoa, senha);
         return await this.usuarioRepository.insertUsuario(usuario);
     }

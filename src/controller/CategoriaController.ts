@@ -8,7 +8,7 @@ import { CategoriaEntity } from "../model/entity/CategoriaEntity";
 @Route("categoria")
 @Tags("Categoria")
 export class CategoriaController extends Controller {
-    categoriaService = new CategoriaService();
+    private categoriaService = new CategoriaService();
 
     @Post()
     async cadastrarCategoria(
@@ -45,15 +45,16 @@ export class CategoriaController extends Controller {
         @Res() success: TsoaResponse<200, BasicResponseDto>
     ): Promise<void> {
         try {
-            const categoria = await this.categoriaService.deletarCategoria(dto);
-            return success(200, new BasicResponseDto("categoria deletada com sucesso!", categoria));
+            const { id } = dto; // Extraí o ID do DTO
+            await this.categoriaService.deletarCategoria(id);
+            return success(200, new BasicResponseDto("Categoria deletada com sucesso!", undefined));
         } catch (error: any) {
             return notFound(400, new BasicResponseDto(error.message, undefined));
         }
     }
 
     @Get("id/{id}")
-    async filtrarcategoriaPorId(
+    async filtrarCategoriaPorId(
         @Path() id: number,
         @Res() notFound: TsoaResponse<400, BasicResponseDto>,
         @Res() success: TsoaResponse<200, BasicResponseDto>
@@ -73,21 +74,25 @@ export class CategoriaController extends Controller {
         @Res() success: TsoaResponse<200, BasicResponseDto>
     ): Promise<void> {
         try {
-            const categoria: CategoriaEntity[] = await this.categoriaService.filtrarCategoriaByName(name);
-            return success(200, new BasicResponseDto("Categoria encontrado!", categoria));
+            const categorias = await this.categoriaService.filtrarCategoriaByName(name);
+            if (categorias.length > 0) {
+                return success(200, new BasicResponseDto("Categorias encontradas!", categorias));
+            } else {
+                return notFound(400, new BasicResponseDto("Nenhuma categoria encontrada com o nome fornecido.", undefined));
+            }
         } catch (error: any) {
             return notFound(400, new BasicResponseDto(error.message, undefined));
         }
     }
 
     @Get("all")
-    async listarTodascategorias(
+    async listarTodasCategorias(
         @Res() notFound: TsoaResponse<400, BasicResponseDto>,
         @Res() success: TsoaResponse<200, BasicResponseDto>
     ): Promise<void> {
         try {
-            const categoria: CategoriaEntity[] = await this.categoriaService.listarTodasCategorias();
-            return success(200, new BasicResponseDto("Categorias listadas com sucesso!", categoria));
+            const categorias = await this.categoriaService.listarTodasCategorias();
+            return success(200, new BasicResponseDto("Categorias listadas com sucesso!", categorias));
         } catch (error: any) {
             return notFound(400, new BasicResponseDto(error.message, undefined));
         }

@@ -834,42 +834,9 @@
 						}
 					}
 				}
-			},
-			"get": {
-				"operationId": "ListarTodosLivros",
-				"responses": {
-					"200": {
-						"description": "",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/BasicResponseDto"
-								}
-							}
-						}
-					},
-					"204": {
-						"description": "No content"
-					},
-					"404": {
-						"description": "",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/BasicResponseDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Livro"
-				],
-				"security": [],
-				"parameters": []
 			}
 		},
-		"/livro/id": {
+		"/livro/id/{id}": {
 			"get": {
 				"operationId": "FiltrarLivroById",
 				"responses": {
@@ -886,7 +853,7 @@
 					"204": {
 						"description": "No content"
 					},
-					"404": {
+					"400": {
 						"description": "",
 						"content": {
 							"application/json": {
@@ -903,7 +870,7 @@
 				"security": [],
 				"parameters": [
 					{
-						"in": "query",
+						"in": "path",
 						"name": "id",
 						"required": true,
 						"schema": {
@@ -914,7 +881,7 @@
 				]
 			}
 		},
-		"/livro/titulo": {
+		"/livro/titulo/{titulo}": {
 			"get": {
 				"operationId": "FiltrarLivroByTitulo",
 				"responses": {
@@ -931,7 +898,7 @@
 					"204": {
 						"description": "No content"
 					},
-					"404": {
+					"400": {
 						"description": "",
 						"content": {
 							"application/json": {
@@ -948,7 +915,7 @@
 				"security": [],
 				"parameters": [
 					{
-						"in": "query",
+						"in": "path",
 						"name": "titulo",
 						"required": true,
 						"schema": {
@@ -956,6 +923,41 @@
 						}
 					}
 				]
+			}
+		},
+		"/livro/all": {
+			"get": {
+				"operationId": "ListarTodosLivros",
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/BasicResponseDto"
+								}
+							}
+						}
+					},
+					"204": {
+						"description": "No content"
+					},
+					"400": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/BasicResponseDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Livro"
+				],
+				"security": [],
+				"parameters": []
 			}
 		},
 		"/emprestimo": {
@@ -1087,49 +1089,6 @@
 						}
 					}
 				}
-			},
-			"get": {
-				"operationId": "FiltrarProdutPorDataEmprestimo",
-				"responses": {
-					"200": {
-						"description": "",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/BasicResponseDto"
-								}
-							}
-						}
-					},
-					"204": {
-						"description": "No content"
-					},
-					"400": {
-						"description": "",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/BasicResponseDto"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Emprestimo"
-				],
-				"security": [],
-				"parameters": [
-					{
-						"in": "query",
-						"name": "dataEmprestimo",
-						"required": true,
-						"schema": {
-							"format": "double",
-							"type": "number"
-						}
-					}
-				]
 			}
 		},
 		"/emprestimo/id/{id}": {
@@ -1387,7 +1346,7 @@
 		},
 		"/categoria/id/{id}": {
 			"get": {
-				"operationId": "FiltrarcategoriaPorId",
+				"operationId": "FiltrarCategoriaPorId",
 				"responses": {
 					"200": {
 						"description": "",
@@ -1432,7 +1391,7 @@
 		},
 		"/categoria/all": {
 			"get": {
-				"operationId": "ListarTodascategorias",
+				"operationId": "ListarTodasCategorias",
 				"responses": {
 					"200": {
 						"description": "",

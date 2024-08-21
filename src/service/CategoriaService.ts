@@ -1,60 +1,50 @@
 import { CategoriaEntity } from "../model/entity/CategoriaEntity";
 import { CategoriaRepository } from "../repository/CategoriaRepository";
+import { CategoriaRequestDto } from "../model/dto/CategoriaRequestDto";
+import { CategoriaDto } from "../model/dto/CategoriaDto";
 
-export class CategoriaService{
+export class CategoriaService {
 
     categoriaRepository: CategoriaRepository = new CategoriaRepository();
 
-    async cadastrarCategoria(categoriaData: any): Promise<CategoriaEntity> {
+    async cadastrarCategoria(categoriaData: CategoriaRequestDto): Promise<CategoriaEntity> {
         const { name } = categoriaData;
-        
-        const categoria = new CategoriaEntity(undefined, name)
 
-        const novaCategoria =  await this.categoriaRepository.insertCategoria(categoria);
-        console.log("Service - Insert ", novaCategoria);
-        return novaCategoria;
+        const categoria = new CategoriaEntity(undefined, name);
+        return await this.categoriaRepository.insertCategoria(categoria);
     }
 
-    async atualizarCategoria(categoriaData: any): Promise<CategoriaEntity> {
-        const { id, name} = categoriaData;
+    async atualizarCategoria(categoriaData: CategoriaDto): Promise<CategoriaEntity> {
+        const { id, name } = categoriaData;
 
-        const categoria = new CategoriaEntity(id, name)
+        const categoriaExistente = await this.categoriaRepository.filterCategoriaById(id);
+        if (!categoriaExistente) {
+            throw new Error(`Categoria com ID ${id} não existe.`);
+        }
 
+        const categoria = new CategoriaEntity(id, name);
         await this.categoriaRepository.updateCategoria(categoria);
-        console.log("Service - Update ", categoria);
         return categoria;
     }
 
-    async deletarCategoria(categoriaData: any): Promise<CategoriaEntity> {
-        const { id, name} = categoriaData;
+    async deletarCategoria(id: number): Promise<void> {
+        const categoriaExistente = await this.categoriaRepository.filterCategoriaById(id);
+        if (!categoriaExistente) {
+            throw new Error(`Categoria com ID ${id} não existe.`);
+        }
 
-        const categoria = new CategoriaEntity(id, name)
-
-        await this.categoriaRepository.deleteCategoria(categoria);
-        console.log("Service - Delete ", categoria);
-        return categoria;
+        await this.categoriaRepository.deleteCategoria(categoriaExistente);
     }
 
-    async filtrarCategoriaById(categoriaData: any): Promise<CategoriaEntity> {
-        const idNumber = parseInt(categoriaData, 10);
-
-        const categoria =  await this.categoriaRepository.filterCategoriaById(idNumber);
-        console.log("Service - Filtrar", categoria);
-        return categoria;
+    async filtrarCategoriaById(id: number): Promise<CategoriaEntity | null> {
+        return await this.categoriaRepository.filterCategoriaById(id);
     }
 
-    async filtrarCategoriaByName(categoriaData: any): Promise<CategoriaEntity[]> {
-        const name:string = categoriaData;
-
-        const categoria =  await this.categoriaRepository.filterCategoriaByName(name);
-        console.log("Service - Filtrar", categoria);
-        return categoria;
+    async filtrarCategoriaByName(name: string): Promise<CategoriaEntity[]> {
+        return await this.categoriaRepository.filterCategoriaByName(name);
     }
 
     async listarTodasCategorias(): Promise<CategoriaEntity[]> {
-        const categoria =  await this.categoriaRepository.filterAllCategorias();
-        console.log("Service - Filtrar Todos", categoria);
-        return categoria;
+        return await this.categoriaRepository.filterAllCategorias();
     }
-
 }

@@ -2,13 +2,12 @@ import { LivroService } from "../service/LivroService";
 import { LivroRequestDto } from "../model/dto/LivroRequestDto";
 import { BasicResponseDto } from "../model/dto/BasicResponseDto";
 import { LivroDto } from "../model/dto/LivroDto";
-import { LivroEntity } from "../model/entity/LivroEntity";
-import { Body, Controller, Delete, Get, Path, Post, Put, Query, Res, Route, Tags, TsoaResponse } from "tsoa";
+import { Body, Controller, Delete, Get, Path, Post, Put, Res, Route, Tags, TsoaResponse } from "tsoa";
 
 @Route("livro")
 @Tags("Livro")
 export class LivroController extends Controller {
-    livroService = new LivroService();
+    private livroService = new LivroService();
 
     @Post()
     async cadastrarLivro(
@@ -52,10 +51,10 @@ export class LivroController extends Controller {
         }
     }
 
-    @Get("/id")
+    @Get("id/{id}")
     async filtrarLivroById(
-        @Query() id: number,
-        @Res() notFound: TsoaResponse<404, BasicResponseDto>,
+        @Path() id: number,
+        @Res() notFound: TsoaResponse<400, BasicResponseDto>,
         @Res() success: TsoaResponse<200, BasicResponseDto>
     ): Promise<void> {
         try {
@@ -63,41 +62,41 @@ export class LivroController extends Controller {
             if (livro) {
                 return success(200, new BasicResponseDto("Livro encontrado com sucesso!", livro));
             } else {
-                return notFound(404, new BasicResponseDto("Livro não encontrado!", undefined));
+                return notFound(400, new BasicResponseDto("Livro não encontrado.", undefined));
             }
         } catch (error: any) {
-            return notFound(404, new BasicResponseDto(error.message, undefined));
+            return notFound(400, new BasicResponseDto(error.message, undefined));
         }
     }
 
-    @Get("/titulo")
+    @Get("titulo/{titulo}")
     async filtrarLivroByTitulo(
-        @Query() titulo: string,
-        @Res() notFound: TsoaResponse<404, BasicResponseDto>,
+        @Path() titulo: string,
+        @Res() notFound: TsoaResponse<400, BasicResponseDto>,
         @Res() success: TsoaResponse<200, BasicResponseDto>
     ): Promise<void> {
         try {
-            const livros = await this.livroService.filtrarLivroByTitulo(titulo);
-            if (livros.length > 0) {
-                return success(200, new BasicResponseDto("Livros encontrados com sucesso!", livros));
+            const livro = await this.livroService.filtrarLivroByTitulo(titulo);
+            if (livro) {
+                return success(200, new BasicResponseDto("Livros encontrados com sucesso!", livro));
             } else {
-                return notFound(404, new BasicResponseDto("Nenhum livro encontrado com o título fornecido!", undefined));
+                return notFound(400, new BasicResponseDto("Nenhum livro encontrado com o título fornecido.", undefined));
             }
         } catch (error: any) {
-            return notFound(404, new BasicResponseDto(error.message, undefined));
+            return notFound(400, new BasicResponseDto(error.message, undefined));
         }
     }
 
-    @Get()
+    @Get("all")
     async listarTodosLivros(
-        @Res() notFound: TsoaResponse<404, BasicResponseDto>,
+        @Res() notFound: TsoaResponse<400, BasicResponseDto>,
         @Res() success: TsoaResponse<200, BasicResponseDto>
     ): Promise<void> {
         try {
             const livros = await this.livroService.listarTodosLivros();
-            return success(200, new BasicResponseDto("Lista de todos os livros listada com sucesso!", livros));
+            return success(200, new BasicResponseDto("Livros listados com sucesso!", livros));
         } catch (error: any) {
-            return notFound (404, new BasicResponseDto(error.message, undefined));
+            return notFound(400, new BasicResponseDto(error.message, undefined));
         }
     }
 }

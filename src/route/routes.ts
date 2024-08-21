@@ -590,14 +590,14 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/livro/id',
+        app.get('/livro/id/:id',
             ...(fetchMiddlewares<RequestHandler>(LivroController)),
             ...(fetchMiddlewares<RequestHandler>(LivroController.prototype.filtrarLivroById)),
 
             async function LivroController_filtrarLivroById(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
-                    id: {"in":"query","name":"id","required":true,"dataType":"double"},
-                    notFound: {"in":"res","name":"404","required":true,"ref":"BasicResponseDto"},
+                    id: {"in":"path","name":"id","required":true,"dataType":"double"},
+                    notFound: {"in":"res","name":"400","required":true,"ref":"BasicResponseDto"},
                     success: {"in":"res","name":"200","required":true,"ref":"BasicResponseDto"},
             };
 
@@ -622,14 +622,14 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/livro/titulo',
+        app.get('/livro/titulo/:titulo',
             ...(fetchMiddlewares<RequestHandler>(LivroController)),
             ...(fetchMiddlewares<RequestHandler>(LivroController.prototype.filtrarLivroByTitulo)),
 
             async function LivroController_filtrarLivroByTitulo(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
-                    titulo: {"in":"query","name":"titulo","required":true,"dataType":"string"},
-                    notFound: {"in":"res","name":"404","required":true,"ref":"BasicResponseDto"},
+                    titulo: {"in":"path","name":"titulo","required":true,"dataType":"string"},
+                    notFound: {"in":"res","name":"400","required":true,"ref":"BasicResponseDto"},
                     success: {"in":"res","name":"200","required":true,"ref":"BasicResponseDto"},
             };
 
@@ -654,13 +654,13 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/livro',
+        app.get('/livro/all',
             ...(fetchMiddlewares<RequestHandler>(LivroController)),
             ...(fetchMiddlewares<RequestHandler>(LivroController.prototype.listarTodosLivros)),
 
             async function LivroController_listarTodosLivros(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
-                    notFound: {"in":"res","name":"404","required":true,"ref":"BasicResponseDto"},
+                    notFound: {"in":"res","name":"400","required":true,"ref":"BasicResponseDto"},
                     success: {"in":"res","name":"200","required":true,"ref":"BasicResponseDto"},
             };
 
@@ -813,38 +813,6 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/emprestimo',
-            ...(fetchMiddlewares<RequestHandler>(EmprestimoController)),
-            ...(fetchMiddlewares<RequestHandler>(EmprestimoController.prototype.filtrarProdutPorDataEmprestimo)),
-
-            async function EmprestimoController_filtrarProdutPorDataEmprestimo(request: ExRequest, response: ExResponse, next: any) {
-            const args: Record<string, TsoaRoute.ParameterSchema> = {
-                    dataEmprestimo: {"in":"query","name":"dataEmprestimo","required":true,"dataType":"double"},
-                    notFound: {"in":"res","name":"400","required":true,"ref":"BasicResponseDto"},
-                    success: {"in":"res","name":"200","required":true,"ref":"BasicResponseDto"},
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = templateService.getValidatedArgs({ args, request, response });
-
-                const controller = new EmprestimoController();
-
-              await templateService.apiHandler({
-                methodName: 'filtrarProdutPorDataEmprestimo',
-                controller,
-                response,
-                next,
-                validatedArgs,
-                successStatus: undefined,
-              });
-            } catch (err) {
-                return next(err);
-            }
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/emprestimo/all',
             ...(fetchMiddlewares<RequestHandler>(EmprestimoController)),
             ...(fetchMiddlewares<RequestHandler>(EmprestimoController.prototype.listarTodosEmprestimos)),
@@ -974,9 +942,9 @@ export function RegisterRoutes(app: Router) {
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/categoria/id/:id',
             ...(fetchMiddlewares<RequestHandler>(CategoriaController)),
-            ...(fetchMiddlewares<RequestHandler>(CategoriaController.prototype.filtrarcategoriaPorId)),
+            ...(fetchMiddlewares<RequestHandler>(CategoriaController.prototype.filtrarCategoriaPorId)),
 
-            async function CategoriaController_filtrarcategoriaPorId(request: ExRequest, response: ExResponse, next: any) {
+            async function CategoriaController_filtrarCategoriaPorId(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
                     id: {"in":"path","name":"id","required":true,"dataType":"double"},
                     notFound: {"in":"res","name":"400","required":true,"ref":"BasicResponseDto"},
@@ -992,7 +960,7 @@ export function RegisterRoutes(app: Router) {
                 const controller = new CategoriaController();
 
               await templateService.apiHandler({
-                methodName: 'filtrarcategoriaPorId',
+                methodName: 'filtrarCategoriaPorId',
                 controller,
                 response,
                 next,
@@ -1038,9 +1006,9 @@ export function RegisterRoutes(app: Router) {
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/categoria/all',
             ...(fetchMiddlewares<RequestHandler>(CategoriaController)),
-            ...(fetchMiddlewares<RequestHandler>(CategoriaController.prototype.listarTodascategorias)),
+            ...(fetchMiddlewares<RequestHandler>(CategoriaController.prototype.listarTodasCategorias)),
 
-            async function CategoriaController_listarTodascategorias(request: ExRequest, response: ExResponse, next: any) {
+            async function CategoriaController_listarTodasCategorias(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
                     notFound: {"in":"res","name":"400","required":true,"ref":"BasicResponseDto"},
                     success: {"in":"res","name":"200","required":true,"ref":"BasicResponseDto"},
@@ -1055,7 +1023,7 @@ export function RegisterRoutes(app: Router) {
                 const controller = new CategoriaController();
 
               await templateService.apiHandler({
-                methodName: 'listarTodascategorias',
+                methodName: 'listarTodasCategorias',
                 controller,
                 response,
                 next,

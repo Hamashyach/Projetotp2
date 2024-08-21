@@ -1,6 +1,5 @@
 import { Body, Controller, Delete, Get, Path, Post, Put, Query, Res, Route, Tags, TsoaResponse } from "tsoa";
 import { EmprestimoService } from "../service/EmprestimoService";
-import { EmprestimoEntity } from "../model/entity/EmprestimoEntity";
 import { EmprestimoRequestDto } from "../model/dto/EmprestimoRequestDto";
 import { BasicResponseDto } from "../model/dto/BasicResponseDto";
 import { EmprestimoDto } from "../model/dto/EmprestimoDto";
@@ -8,7 +7,7 @@ import { EmprestimoDto } from "../model/dto/EmprestimoDto";
 @Route("emprestimo")
 @Tags("Emprestimo")
 export class EmprestimoController extends Controller {
-    emprestimoService = new EmprestimoService();
+    private emprestimoService = new EmprestimoService();
 
     @Post()
     async cadastrarEmprestimo(
@@ -18,7 +17,7 @@ export class EmprestimoController extends Controller {
     ): Promise<void> {
         try {
             const emprestimo = await this.emprestimoService.cadastrarEmprestimo(dto);
-            return success(201, new BasicResponseDto("Emprestimo criado com sucesso!", emprestimo));
+            return success(201, new BasicResponseDto("Empréstimo criado com sucesso!", emprestimo));
         } catch (error: any) {
             return fail(400, new BasicResponseDto(error.message, undefined));
         }
@@ -32,7 +31,7 @@ export class EmprestimoController extends Controller {
     ): Promise<void> {
         try {
             const emprestimo = await this.emprestimoService.atualizarEmprestimo(dto);
-            return success(200, new BasicResponseDto("Emprestimo atualizado com sucesso!", emprestimo));
+            return success(200, new BasicResponseDto("Empréstimo atualizado com sucesso!", emprestimo));
         } catch (error: any) {
             return notFound(400, new BasicResponseDto(error.message, undefined));
         }
@@ -46,7 +45,7 @@ export class EmprestimoController extends Controller {
     ): Promise<void> {
         try {
             const emprestimo = await this.emprestimoService.deletarEmprestimo(dto);
-            return success(200, new BasicResponseDto("Emprestimo deletado com sucesso!", emprestimo));
+            return success(200, new BasicResponseDto("Empréstimo deletado com sucesso!", emprestimo));
         } catch (error: any) {
             return notFound(400, new BasicResponseDto(error.message, undefined));
         }
@@ -60,21 +59,11 @@ export class EmprestimoController extends Controller {
     ): Promise<void> {
         try {
             const emprestimo = await this.emprestimoService.filtrarEmprestimoById(id);
-            return success(200, new BasicResponseDto("Emprestimo encontrado!", emprestimo));
-        } catch (error: any) {
-            return notFound(400, new BasicResponseDto(error.message, undefined));
-        }
-    }
-
-    @Get()
-    async filtrarProdutPorDataEmprestimo(
-        @Query() dataEmprestimo: number,
-        @Res() notFound: TsoaResponse<400, BasicResponseDto>,
-        @Res() success: TsoaResponse<200, BasicResponseDto>
-    ): Promise<void> {
-        try {
-            const emprestimo: EmprestimoEntity = await this.emprestimoService.filtrarProdutoByDataEmprestimo(dataEmprestimo);
-            return success(200, new BasicResponseDto("emprestimo encontrado!", emprestimo));
+            if (emprestimo) {
+                return success(200, new BasicResponseDto("Empréstimo encontrado!", emprestimo));
+            } else {
+                return notFound(400, new BasicResponseDto("Empréstimo não encontrado.", undefined));
+            }
         } catch (error: any) {
             return notFound(400, new BasicResponseDto(error.message, undefined));
         }
@@ -86,8 +75,8 @@ export class EmprestimoController extends Controller {
         @Res() success: TsoaResponse<200, BasicResponseDto>
     ): Promise<void> {
         try {
-            const emprestimo : EmprestimoEntity[] = await this.emprestimoService.listarTodosEmprestimo();
-            return success(200, new BasicResponseDto("Emprestimo listados com sucesso!", emprestimo));
+            const emprestimos = await this.emprestimoService.listarTodosEmprestimo();
+            return success(200, new BasicResponseDto("Empréstimos listados com sucesso!", emprestimos));
         } catch (error: any) {
             return notFound(400, new BasicResponseDto(error.message, undefined));
         }
