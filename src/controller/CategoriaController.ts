@@ -3,7 +3,7 @@ import { CategoriaService } from "../service/CategoriaService";
 import { CategoriaRequestDto } from "../model/dto/CategoriaRequestDto";
 import { BasicResponseDto } from "../model/dto/BasicResponseDto";
 import { CategoriaDto } from "../model/dto/CategoriaDto";
-import { CategoriaEntity } from "../model/entity/CategoriaEntity";
+
 
 @Route("categoria")
 @Tags("Categoria")
@@ -45,7 +45,7 @@ export class CategoriaController extends Controller {
         @Res() success: TsoaResponse<200, BasicResponseDto>
     ): Promise<void> {
         try {
-            const { id } = dto; // Extraí o ID do DTO
+            const { id } = dto; 
             await this.categoriaService.deletarCategoria(id);
             return success(200, new BasicResponseDto("Categoria deletada com sucesso!", undefined));
         } catch (error: any) {

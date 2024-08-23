@@ -60,7 +60,7 @@ export class LivroRepository {
 
         try {
             await executarComandoSQL(query, [livro.id]);
-            console.log('Livro deletado com sucesso: ', livro);
+            console.log('Livro deletado com sucesso: ', livro.id);
             return livro;
         } catch (err: any) {
             console.error(`Falha ao deletar o livro de ID ${livro.id} gerando o erro: ${err}`);
