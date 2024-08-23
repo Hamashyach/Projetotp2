@@ -17,7 +17,7 @@ export class PessoaEntity{
                 error +=("Informações incompletas ou incorretas");
             }
 
-            if(error != ''){
+            if(error !== ''){
                 throw new Error(error);
             }
         }
