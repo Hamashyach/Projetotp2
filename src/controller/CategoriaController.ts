@@ -3,12 +3,12 @@ import { CategoriaService } from "../service/CategoriaService";
 import { CategoriaRequestDto } from "../model/dto/CategoriaRequestDto";
 import { BasicResponseDto } from "../model/dto/BasicResponseDto";
 import { CategoriaDto } from "../model/dto/CategoriaDto";
-
+import { RepositoryFactory } from "../patterns/factory/RepositoryFactory";
 
 @Route("categoria")
 @Tags("Categoria")
 export class CategoriaController extends Controller {
-    private categoriaService = new CategoriaService();
+    private categoriaService = new CategoriaService(new RepositoryFactory());
 
     @Post()
     async cadastrarCategoria(

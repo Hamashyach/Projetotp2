@@ -1,5 +1,6 @@
 import { executarComandoSQL } from "../database/mysql";
 import { UsuarioEntity } from "../model/entity/UsuarioEntity";
+import { IUsuarioRepository } from "./interfaces/IUsuarioRepository";
 
 export class UsuarioRepository{
 

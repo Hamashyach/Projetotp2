@@ -1,7 +1,8 @@
 import { executarComandoSQL } from "../database/mysql";
 import { EmprestimoEntity } from "../model/entity/EmprestimoEntity";
+import { IEmprestimoRepository } from "./interfaces/IEmprestimoRepository";
 
-export class EmprestimoRepository {
+export class EmprestimoRepository implements IEmprestimoRepository {
 
     constructor() {
         this.createTable();

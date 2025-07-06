@@ -1,7 +1,8 @@
 import { executarComandoSQL } from "../database/mysql";
 import { PessoaEntity } from "../model/entity/PessoaEntity";
+import { IPessoaRepository } from "./interfaces/IPessoarepository";
 
-export class PessoaRepository {
+export class PessoaRepository implements IPessoaRepository {
     constructor() {
         this.createTable();
     }

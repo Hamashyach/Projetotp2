@@ -1,0 +1,10 @@
+import { EmprestimoEntity } from "../../model/entity/EmprestimoEntity";
+
+export interface IEmprestimoRepository {
+    insertEmprestimo(emprestimo: EmprestimoEntity): Promise<EmprestimoEntity>;
+    updateEmprestimo(emprestimo: EmprestimoEntity): Promise<EmprestimoEntity>;
+    deleteEmprestimo(emprestimo: EmprestimoEntity): Promise<EmprestimoEntity>;
+    filterEmprestimoById(id: number): Promise<EmprestimoEntity | null>;
+    filterAllEmprestimos(): Promise<EmprestimoEntity[]>;
+
+}

@@ -1,7 +1,8 @@
 import { executarComandoSQL } from "../database/mysql";
 import { LivroEntity } from "../model/entity/LivroEntity";
+import { ILivroRepository } from "./interfaces/ILivroRepository";
 
-export class LivroRepository {
+export class LivroRepository implements ILivroRepository {
 
     constructor() {
         this.createTable();

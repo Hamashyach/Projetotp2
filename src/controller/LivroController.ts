@@ -3,12 +3,22 @@ import { LivroRequestDto } from "../model/dto/LivroRequestDto";
 import { BasicResponseDto } from "../model/dto/BasicResponseDto";
 import { LivroDto } from "../model/dto/LivroDto";
 import { Body, Controller, Delete, Get, Path, Post, Put, Res, Route, Tags, TsoaResponse } from "tsoa";
+import { RepositoryFactory } from "../patterns/factory/RepositoryFactory";
+import { CommandInvoker } from "../patterns/command/CommandInvoker";
+import { AddLivroCommand } from "../patterns/command/AddLivroCommand";
+
+// --- Instanciar o Invocador globalmente (ou por instância do controller) ---
+const commandInvoker = new CommandInvoker();
 
 @Route("livro")
 @Tags("Livro")
 export class LivroController extends Controller {
-    private livroService = new LivroService();
+    // Instancia a fábrica
+    private repositoryFactory = new RepositoryFactory();
+    // Passa a fábrica para o serviço
+    private livroService = new LivroService(this.repositoryFactory);
 
+    // Modificar o método de cadastro para usar o Padrão Command
     @Post()
     async cadastrarLivro(
         @Body() dto: LivroRequestDto,
@@ -16,13 +26,33 @@ export class LivroController extends Controller {
         @Res() success: TsoaResponse<201, BasicResponseDto>
     ): Promise<void> {
         try {
-            const livro = await this.livroService.cadastrarLivro(dto);
-            return success(201, new BasicResponseDto("Livro criado com sucesso!", livro));
+            const addCommand = new AddLivroCommand(this.livroService, dto);
+            await commandInvoker.executeCommand(addCommand);
+            
+            const livroCriado = (addCommand as any).livroCriado;
+            return success(201, new BasicResponseDto("Livro criado com sucesso via Command!", livroCriado));
+
         } catch (error: any) {
             return fail(400, new BasicResponseDto(error.message, undefined));
         }
     }
 
+    // --- Nova Rota para Desfazer ---
+    @Post("/undo")
+    async undoLastLivroAction(
+        @Res() fail: TsoaResponse<400, BasicResponseDto>,
+        @Res() success: TsoaResponse<200, BasicResponseDto>
+    ): Promise<void> {
+        try {
+            await commandInvoker.undoLastCommand();
+            return success(200, new BasicResponseDto("Última ação desfeita com sucesso!", undefined));
+        } catch(error: any) {
+            return fail(400, new BasicResponseDto(error.message, undefined));
+        }
+    }
+
+    // ... (restante dos métodos do controller: atualizarLivro, deletarLivro, etc. permanecem os mesmos)
+    // ...
     @Put()
     async atualizarLivro(
         @Body() dto: LivroDto,

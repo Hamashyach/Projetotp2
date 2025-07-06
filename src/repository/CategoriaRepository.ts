@@ -1,7 +1,8 @@
 import { executarComandoSQL } from "../database/mysql";
 import { CategoriaEntity } from "../model/entity/CategoriaEntity";
+import { ICategoriaRepository } from "./interfaces/ICategoriaRepository"; 
 
-export class CategoriaRepository {
+export class CategoriaRepository implements ICategoriaRepository {
 
     constructor() {
         this.createTable();

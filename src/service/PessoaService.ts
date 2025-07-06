@@ -1,8 +1,13 @@
+import { IRepositoryFactory } from "../patterns/factory/IRepositoryFactory";
 import { PessoaEntity } from "../model/entity/PessoaEntity";
-import { PessoaRepository } from "../repository/PessoaRepository";
+import { IPessoaRepository } from "../repository/interfaces/IPessoarepository";
 
 export class PessoaService {
-    private pessoaRepository = new PessoaRepository();
+    private pessoaRepository: IPessoaRepository;
+
+    constructor(factory: IRepositoryFactory) {
+        this.pessoaRepository = factory.createPessoaRepository();
+    }
 
     async cadastrarPessoa(pessoaData: any): Promise<PessoaEntity> {
         const { name, email } = pessoaData;

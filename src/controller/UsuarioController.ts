@@ -3,12 +3,34 @@ import { UsuarioRequestDto } from "../model/dto/UsuarioRequestDto";
 import { BasicResponseDto } from "../model/dto/BasicResponseDto";
 import { UsuarioDto } from "../model/dto/UsuarioDto";
 import { Body, Controller, Delete, Get, Path, Post, Put, Res, Route, Tags, TsoaResponse } from "tsoa";
+import { CadastroFacade } from "../patterns/facade/CadastroFacade";
+import { UsuarioCompletoRequestDto } from "../model/dto/UsuarioCompletoRequestDto";
+import { RepositoryFactory } from "../patterns/factory/RepositoryFactory";
 
 @Route("usuario")
 @Tags("Usuario")
 export class UsuarioController extends Controller {
-    private usuarioService = new UsuarioService();
+    private usuarioService = new UsuarioService(new RepositoryFactory());
+    private cadastroFacade = new CadastroFacade();
+    
 
+    // --- Nova Rota usando a Facade ---
+    @Post("/completo")
+    public async cadastrarUsuarioCompleto(
+        @Body() dto: UsuarioCompletoRequestDto,
+        @Res() fail: TsoaResponse<400, BasicResponseDto>,
+        @Res() success: TsoaResponse<201, BasicResponseDto>
+    ): Promise<void> {
+        try {
+            const response = await this.cadastroFacade.cadastrarNovoUsuarioCompleto(dto);
+            return success(201, response);
+        } catch(error: any) {
+            return fail(400, new BasicResponseDto(error.message, undefined));
+        }
+    }
+
+    // ... (restante dos métodos do controller: cadastrarUsuario, atualizarUsuario, etc. permanecem os mesmos)
+    // ...
     @Post()
     async cadastrarUsuario(
         @Body() dto: UsuarioRequestDto,

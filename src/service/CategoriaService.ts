@@ -1,11 +1,15 @@
+import { IRepositoryFactory } from "../patterns/factory/IRepositoryFactory";
 import { CategoriaEntity } from "../model/entity/CategoriaEntity";
-import { CategoriaRepository } from "../repository/CategoriaRepository";
+import { ICategoriaRepository } from "../repository/interfaces/ICategoriaRepository";
 import { CategoriaRequestDto } from "../model/dto/CategoriaRequestDto";
 import { CategoriaDto } from "../model/dto/CategoriaDto";
 
 export class CategoriaService {
+    private categoriaRepository: ICategoriaRepository;
 
-    categoriaRepository: CategoriaRepository = new CategoriaRepository();
+    constructor(factory: IRepositoryFactory) {
+        this.categoriaRepository = factory.createCategoriaRepository();
+    }
 
     async cadastrarCategoria(categoriaData: CategoriaRequestDto): Promise<CategoriaEntity> {
         const { name } = categoriaData;

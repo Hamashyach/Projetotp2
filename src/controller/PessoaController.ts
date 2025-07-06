@@ -2,13 +2,13 @@ import { PessoaService } from "../service/PessoaService";
 import { PessoaRequestDto } from "../model/dto/PessoaRequestDto";
 import { BasicResponseDto } from "../model/dto/BasicResponseDto";
 import { PessoaDto } from "../model/dto/PessoaDto";
-import { PessoaEntity } from "../model/entity/PessoaEntity";
+import { RepositoryFactory } from "../patterns/factory/RepositoryFactory";
 import { Body, Controller, Delete, Get, Path, Post, Put, Query, Res, Route, Tags, TsoaResponse } from "tsoa";
 
 @Route("pessoa")
 @Tags("Pessoa")
 export class PessoaController extends Controller {
-    private pessoaService = new PessoaService();
+    private pessoaService = new PessoaService(new RepositoryFactory());
 
     @Post()
     async cadastrarPessoa(

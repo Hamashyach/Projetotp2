@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Biblioteca</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Sistema de Biblioteca</h1>
+
+    <div class="container">
+        <div class="section">
+            <h2>Pessoas</h2>
+            <form id="form-pessoa">
+                <input type="text" id="pessoa-nome" placeholder="Nome da Pessoa" required>
+                <input type="email" id="pessoa-email" placeholder="Email" required>
+                <button type="submit">Cadastrar Pessoa</button>
+            </form>
+            <h3>Pessoas Cadastradas</h3>
+            <ul id="lista-pessoas"></ul>
+        </div>
+
+        <div class="section">
+            <h2>Categorias</h2>
+            <form id="form-categoria">
+                <input type="text" id="categoria-nome" placeholder="Nome da Categoria" required>
+                <button type="submit">Cadastrar Categoria</button>
+            </form>
+            <h3>Categorias Cadastradas</h3>
+            <ul id="lista-categorias"></ul>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="section">
+            <h2>Livros</h2>
+            <form id="form-livro">
+                <input type="text" id="livro-titulo" placeholder="Título do Livro" required>
+                <input type="text" id="livro-autor" placeholder="Autor" required>
+                <select id="livro-categoria" required>
+                    <option value="">Selecione uma Categoria</option>
+                </select>
+                <button type="submit">Cadastrar Livro</button>
+            </form>
+            <h3>Livros Cadastrados</h3>
+            <ul id="lista-livros"></ul>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

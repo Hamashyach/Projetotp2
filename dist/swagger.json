@@ -7,18 +7,21 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
-			"UsuarioRequestDto": {
+			"UsuarioCompletoRequestDto": {
 				"properties": {
-					"idPessoa": {
-						"type": "number",
-						"format": "double"
+					"name": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
 					},
 					"senha": {
 						"type": "string"
 					}
 				},
 				"required": [
-					"idPessoa",
+					"name",
+					"email",
 					"senha"
 				],
 				"type": "object",
@@ -34,6 +37,23 @@
 				"required": [
 					"message",
 					"object"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"UsuarioRequestDto": {
+				"properties": {
+					"idPessoa": {
+						"type": "number",
+						"format": "double"
+					},
+					"senha": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"idPessoa",
+					"senha"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -93,6 +113,23 @@
 					"id",
 					"name",
 					"email"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"LoginRequestDto": {
+				"properties": {
+					"idPessoa": {
+						"type": "number",
+						"format": "double"
+					},
+					"senha": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"idPessoa",
+					"senha"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -241,6 +278,51 @@
 		"description": "Documentação da API usando Swagger"
 	},
 	"paths": {
+		"/usuario/completo": {
+			"post": {
+				"operationId": "CadastrarUsuarioCompleto",
+				"responses": {
+					"201": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/BasicResponseDto"
+								}
+							}
+						}
+					},
+					"204": {
+						"description": "No content"
+					},
+					"400": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/BasicResponseDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Usuario"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UsuarioCompletoRequestDto"
+							}
+						}
+					}
+				}
+			}
+		},
 		"/usuario": {
 			"post": {
 				"operationId": "CadastrarUsuario",
@@ -705,6 +787,51 @@
 				"parameters": []
 			}
 		},
+		"/login": {
+			"post": {
+				"operationId": "Login",
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/BasicResponseDto"
+								}
+							}
+						}
+					},
+					"204": {
+						"description": "No content"
+					},
+					"401": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/BasicResponseDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Autenticação"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/LoginRequestDto"
+							}
+						}
+					}
+				}
+			}
+		},
 		"/livro": {
 			"post": {
 				"operationId": "CadastrarLivro",
@@ -834,6 +961,41 @@
 						}
 					}
 				}
+			}
+		},
+		"/livro/undo": {
+			"post": {
+				"operationId": "UndoLastLivroAction",
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/BasicResponseDto"
+								}
+							}
+						}
+					},
+					"204": {
+						"description": "No content"
+					},
+					"400": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/BasicResponseDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Livro"
+				],
+				"security": [],
+				"parameters": []
 			}
 		},
 		"/livro/id/{id}": {

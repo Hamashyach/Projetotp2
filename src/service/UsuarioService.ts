@@ -1,10 +1,16 @@
+import { IRepositoryFactory } from "../patterns/factory/IRepositoryFactory";
 import { UsuarioEntity } from "../model/entity/UsuarioEntity";
-import { PessoaRepository } from "../repository/PessoaRepository";
-import { UsuarioRepository } from "../repository/UsuarioRepository";
+import { IPessoaRepository } from "../repository/interfaces/IPessoarepository";
+import { IUsuarioRepository } from "../repository/interfaces/IUsuarioRepository";
 
 export class UsuarioService {
-    private usuarioRepository = new UsuarioRepository();
-    private pessoaRepository = new PessoaRepository();
+    private usuarioRepository: IUsuarioRepository;
+    private pessoaRepository: IPessoaRepository;
+
+    constructor(factory: IRepositoryFactory) {
+        this.usuarioRepository = factory.createUsuarioRepository();
+        this.pessoaRepository = factory.createPessoaRepository();
+    }
 
     async cadastrarUsuario(usuarioData: any): Promise<UsuarioEntity> {
         const { idPessoa, senha } = usuarioData;
@@ -30,6 +36,7 @@ export class UsuarioService {
         const { id, idPessoa, senha } = usuarioData;
 
         const usuario = new UsuarioEntity(id, idPessoa, senha);
+        // O método no repositório agora se chama "deleteUsuario"
         await this.usuarioRepository.deletarUsuario(usuario);
         return usuario;
     }

@@ -1,10 +1,17 @@
 import { LivroEntity } from "../model/entity/LivroEntity";
-import { LivroRepository } from "../repository/LivroRepository";
-import { CategoriaRepository } from "../repository/CategoriaRepository";
+import { ILivroRepository } from "../repository/interfaces/ILivroRepository";
+import { ICategoriaRepository } from "../repository/interfaces/ICategoriaRepository";
+import { IRepositoryFactory } from "../patterns/factory/IRepositoryFactory";
 
 export class LivroService {
-    livroRepository: LivroRepository = new LivroRepository();
-    categoriaRepository = new CategoriaRepository();
+    private livroRepository: ILivroRepository;
+    private categoriaRepository: ICategoriaRepository;
+
+    // O serviço agora depende da fábrica, não das classes concretas
+    constructor(factory: IRepositoryFactory) {
+        this.livroRepository = factory.createLivroRepository();
+        this.categoriaRepository = factory.createCategoriaRepository();
+    }
 
     async cadastrarLivro(livroData: any): Promise<LivroEntity> {
         const { titulo, autor, categoriaId } = livroData;

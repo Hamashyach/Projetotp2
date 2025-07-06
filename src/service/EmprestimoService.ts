@@ -1,15 +1,43 @@
+import { IRepositoryFactory } from "../patterns/factory/IRepositoryFactory";
 import { EmprestimoEntity } from "../model/entity/EmprestimoEntity";
-import { EmprestimoRepository } from "../repository/EmprestimoRepository";
-import { UsuarioRepository } from "../repository/UsuarioRepository";
-import { LivroRepository } from "../repository/LivroRepository";
+import { IEmprestimoRepository } from "../repository/interfaces/IEmprestimoRepository";
+import { ILivroRepository } from "../repository/interfaces/ILivroRepository";
+import { IUsuarioRepository } from "../repository/interfaces/IUsuarioRepository";
+import { IObserver } from "../patterns/observer/IObserver"; // Importar
+import { ISubject } from "../patterns/observer/ISubject"; 
 
-export class EmprestimoService{
+export class EmprestimoService {
+    private emprestimoRepository: IEmprestimoRepository;
+    private usuarioRepository: IUsuarioRepository;
+    private livroRepository: ILivroRepository;
 
-    emprestimoRepository: EmprestimoRepository = new EmprestimoRepository();
-    usuarioRepository: UsuarioRepository = new UsuarioRepository();
-    livroRepository: LivroRepository = new LivroRepository();
+    private observers: IObserver[] = [];
 
-    async cadastrarEmprestimo(emprestimoData: any): Promise<EmprestimoEntity> {
+    constructor(factory: IRepositoryFactory) {
+        this.emprestimoRepository = factory.createEmprestimoRepository();
+        this.usuarioRepository = factory.createUsuarioRepository();
+        this.livroRepository = factory.createLivroRepository();
+    }
+
+    public registerObserver(observer: IObserver): void {
+        this.observers.push(observer);
+    }
+
+    public unregisterObserver(observer: IObserver): void {
+        const index = this.observers.indexOf(observer);
+        if (index > -1) {
+            this.observers.splice(index, 1);
+        }
+    }
+
+    public notifyObservers(data: any): void {
+        console.log("[Subject] Notificando observers...");
+        for (const observer of this.observers) {
+            observer.update(data);
+        }
+    }
+
+     async cadastrarEmprestimo(emprestimoData: any): Promise<EmprestimoEntity> {
         const { livroId, usuarioId, dataEmprestimo, dataDevolucao } = emprestimoData;
        
         const usuario = await this.usuarioRepository.filterusuarioById(usuarioId);
@@ -22,9 +50,13 @@ export class EmprestimoService{
             throw new Error(`livro com ID ${livroId} não existe.`);
         }
 
-
         const emprestimo = new EmprestimoEntity(undefined, livroId, usuarioId, dataEmprestimo, dataDevolucao);
-        return await this.emprestimoRepository.insertEmprestimo(emprestimo);
+        const novoEmprestimo = await this.emprestimoRepository.insertEmprestimo(emprestimo);
+
+        // Notificar todos os observers após o sucesso do cadastro
+        this.notifyObservers(novoEmprestimo);
+
+        return novoEmprestimo;
     }
 
     async atualizarEmprestimo(emprestimoData: any): Promise<EmprestimoEntity> {

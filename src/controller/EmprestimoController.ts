@@ -3,11 +3,21 @@ import { EmprestimoService } from "../service/EmprestimoService";
 import { EmprestimoRequestDto } from "../model/dto/EmprestimoRequestDto";
 import { BasicResponseDto } from "../model/dto/BasicResponseDto";
 import { EmprestimoDto } from "../model/dto/EmprestimoDto";
+import { RepositoryFactory } from "../patterns/factory/RepositoryFactory";
+import { EmailObserver } from "../patterns/observer/EmailObserver"; // Importar
+import { LogObserver } from "../patterns/observer/LogObserver"; // Importar
 
 @Route("emprestimo")
 @Tags("Emprestimo")
 export class EmprestimoController extends Controller {
-    private emprestimoService = new EmprestimoService();
+    private emprestimoService = new EmprestimoService(new RepositoryFactory());
+
+    constructor() {
+        super();
+        // Registrando os observers no serviço assim que o controller é criado
+        this.emprestimoService.registerObserver(new EmailObserver());
+        this.emprestimoService.registerObserver(new LogObserver());
+    }
 
     @Post()
     async cadastrarEmprestimo(
