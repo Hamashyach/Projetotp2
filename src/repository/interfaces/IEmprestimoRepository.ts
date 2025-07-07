@@ -6,5 +6,7 @@ export interface IEmprestimoRepository {
     deleteEmprestimo(emprestimo: EmprestimoEntity): Promise<EmprestimoEntity>;
     filterEmprestimoById(id: number): Promise<EmprestimoEntity | null>;
     filterAllEmprestimos(): Promise<EmprestimoEntity[]>;
+    countEmprestimosByUsuarioId(usuarioId: number): Promise<number>;
+    findAtivoByLivroId(livroId: number): Promise<EmprestimoEntity | null>;
 
 }

@@ -16,6 +16,11 @@ export class LivroService {
     async cadastrarLivro(livroData: any): Promise<LivroEntity> {
         const { titulo, autor, categoriaId } = livroData;
 
+        const livroExistente = await this.livroRepository.filterLivroByTituloAndAutor(titulo, autor);
+        if (livroExistente) {
+            throw new Error(`O livro "${titulo}" do autor "${autor}" já está cadastrado.`);
+        }
+
         const categoria = await this.categoriaRepository.filterCategoriaById(categoriaId);
         if(!categoria){
             throw new Error(`Categoria com ID ${categoriaId} não encontrada.`)

@@ -4,7 +4,7 @@ import { IEmprestimoRepository } from "../repository/interfaces/IEmprestimoRepos
 import { ILivroRepository } from "../repository/interfaces/ILivroRepository";
 import { IUsuarioRepository } from "../repository/interfaces/IUsuarioRepository";
 import { IObserver } from "../patterns/observer/IObserver"; // Importar
-import { ISubject } from "../patterns/observer/ISubject"; 
+
 
 export class EmprestimoService {
     private emprestimoRepository: IEmprestimoRepository;
@@ -39,7 +39,18 @@ export class EmprestimoService {
 
      async cadastrarEmprestimo(emprestimoData: any): Promise<EmprestimoEntity> {
         const { livroId, usuarioId, dataEmprestimo, dataDevolucao } = emprestimoData;
-       
+        const LIMITE_EMPRESTIMOS = 5; 
+
+        const emprestimosAtuais = await this.emprestimoRepository.countEmprestimosByUsuarioId(usuarioId);
+        if (emprestimosAtuais >= LIMITE_EMPRESTIMOS) {
+            throw new Error(`Usuário já atingiu o limite de ${LIMITE_EMPRESTIMOS} empréstimos.`);
+        }
+
+        const emprestimoExistente = await this.emprestimoRepository.findAtivoByLivroId(livroId);
+        if (emprestimoExistente) {
+            throw new Error(`O livro com ID ${livroId} já está emprestado.`);
+        }
+
         const usuario = await this.usuarioRepository.filterusuarioById(usuarioId);
         if (!usuario) {
             throw new Error(`usuario com ID ${usuarioId} não existe.`);

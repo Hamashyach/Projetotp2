@@ -11,6 +11,10 @@ export class PessoaService {
 
     async cadastrarPessoa(pessoaData: any): Promise<PessoaEntity> {
         const { name, email } = pessoaData;
+        const emailExistente = await this.pessoaRepository.findPessoaByEmail(email);
+        if (emailExistente) {
+            throw new Error(`O e-mail '${email}' já está em uso.`);
+        }
         const pessoa = new PessoaEntity(undefined, name, email);
         return await this.pessoaRepository.insertPessoa(pessoa);
     }

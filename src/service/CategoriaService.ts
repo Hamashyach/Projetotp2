@@ -14,6 +14,11 @@ export class CategoriaService {
     async cadastrarCategoria(categoriaData: CategoriaRequestDto): Promise<CategoriaEntity> {
         const { name } = categoriaData;
 
+        const categoriaExistente = await this.categoriaRepository.filterCategoriaByName(name);
+        if (categoriaExistente && categoriaExistente.length > 0) {
+            throw new Error(`A categoria "${name}" já existe.`);
+        }
+
         const categoria = new CategoriaEntity(undefined, name);
         return await this.categoriaRepository.insertCategoria(categoria);
     }

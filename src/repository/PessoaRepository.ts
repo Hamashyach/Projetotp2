@@ -87,7 +87,7 @@ export class PessoaRepository implements IPessoaRepository {
         }
     }
 
-    async filterPessoaByEmail(email: string): Promise<PessoaEntity | null> {
+    async findPessoaByEmail(email: string): Promise<PessoaEntity | null> {
         const query = "SELECT * FROM pessoa WHERE email = ?";
         try {
             const resultado = await executarComandoSQL(query, [email]);
@@ -98,6 +98,17 @@ export class PessoaRepository implements IPessoaRepository {
             return null; // Nenhum usuário encontrado com este e-mail
         } catch (err) {
             console.error(`Erro ao procurar a pessoa com email ${email}:`, err);
+            throw err;
+        }
+    }
+
+    async filterAllPessoas(): Promise<PessoaEntity[]> {
+        const query = "SELECT * FROM pessoa";
+        try {
+            const resultado = await executarComandoSQL(query, []);
+            return resultado.map((row: any) => new PessoaEntity(row.id, row.name, row.email));
+        } catch (err: any) {
+            console.error(`Erro ao listar todas as pessoas: ${err}`);
             throw err;
         }
     }

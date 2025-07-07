@@ -107,4 +107,30 @@ export class EmprestimoRepository implements IEmprestimoRepository {
             throw err;
         }
     }
+
+    async countEmprestimosByUsuarioId(usuarioId: number): Promise<number> {
+        const query = "SELECT COUNT(*) as total FROM emprestimo WHERE usuarioId = ?";
+        try {
+            const resultado = await executarComandoSQL(query, [usuarioId]);
+            return resultado[0].total;
+        } catch (err: any) {
+            console.error(`Erro ao contar empréstimos para o usuário de ID ${usuarioId}:`, err);
+            throw err;
+        }
+    }
+
+    async findAtivoByLivroId(livroId: number): Promise<EmprestimoEntity | null> {
+        const query = "SELECT * FROM emprestimo WHERE livroId = ? AND dataDevolucao IS NULL";
+
+        try {
+            const resultado = await executarComandoSQL(query, [livroId]);
+            if (resultado.length > 0) {
+                return resultado[0];
+            }
+            return null;
+        } catch (err: any) {
+            console.error(`Erro ao buscar empréstimo ativo para o livro de ID ${livroId}:`, err);
+            throw err;
+        }
+    }
 }

@@ -106,4 +106,22 @@ export class LivroRepository implements ILivroRepository {
             throw err;
         }
     }
+
+    async filterLivroByTituloAndAutor(titulo: string, autor: string): Promise<LivroEntity | null> {
+        const query = "SELECT * FROM livro WHERE titulo = ? AND autor = ?";
+
+        try {
+            const resultado: LivroEntity[] = await executarComandoSQL(query, [titulo, autor]);
+            if (resultado.length > 0) {
+                console.log('Livro localizado com sucesso, Título: ', titulo, ' Autor: ', autor);
+                return resultado[0];
+            } else {
+                console.log('Nenhum livro encontrado com o título e autor fornecidos.');
+                return null;
+            }
+        } catch (err: any) {
+            console.error(`Falha ao procurar o livro com o título ${titulo} e autor ${autor} gerando o erro: ${err}`);
+            throw err;
+        }
+    }
 }

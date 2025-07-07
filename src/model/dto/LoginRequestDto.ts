@@ -1,5 +1,5 @@
 export class LoginRequestDto {
-    email: string;
+    email: string; // Alterado de idPessoa para email
     senha: string;
 
     constructor(email?: string, senha?: string) {

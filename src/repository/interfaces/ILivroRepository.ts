@@ -7,4 +7,5 @@ export interface ILivroRepository {
     filterLivroById(id: number): Promise<LivroEntity | null>;
     filterLivroByTitulo(titulo: string): Promise<LivroEntity[]>;
     filterAllLivro(): Promise<LivroEntity[]>;
+    filterLivroByTituloAndAutor(titulo: string, autor: string): Promise<LivroEntity | null>;
 }

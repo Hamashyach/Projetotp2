@@ -28,18 +28,13 @@ export class UsuarioRepository{
             
     }
 
-    async insertUsuario(usuario:UsuarioEntity): Promise<UsuarioEntity>{
+     async insertUsuario(usuario: UsuarioEntity): Promise<UsuarioEntity> {
         const query = "INSERT INTO usuario (idPessoa, senha) VALUES (?, ?)";
-
         try {
             const resultado = await executarComandoSQL(query, [usuario.idPessoa, usuario.senha]);
-            console.log('Usuario inserido com sucesso, ID ', resultado.insertId);
             usuario.id = resultado.insertId;
-            return new Promise<UsuarioEntity>((resolve)=>{
-                resolve(usuario);
-            })
-
-        }catch (err) {
+            return usuario; // Retorno direto
+        } catch (err) {
             console.error('Erro ao inserir usuario: ', err);
             throw err;
         }

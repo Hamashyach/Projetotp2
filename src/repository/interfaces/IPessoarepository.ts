@@ -6,6 +6,6 @@ export interface IPessoaRepository {
     deletarPessoa(pessoa: PessoaEntity): Promise<PessoaEntity>;
     filterPessoaById(id: number): Promise<PessoaEntity | null>;
     filterPessoaByName(name: string): Promise<PessoaEntity[]>;
+    findPessoaByEmail(email: string): Promise<PessoaEntity | null>;
     filterAllPessoas(): Promise<PessoaEntity[]>;
-    filterPessoaByEmail(email: string): Promise<PessoaEntity | null>;
 }
