@@ -17,7 +17,7 @@ export class UsuarioEntity {
         }
 
         if (typeof senha === 'string' && senha.length < 6) {
-        error += "A senha deve ter pelo menos 6 caracteres. ";
+            error += "A senha deve ter pelo menos 6 caracteres. ";
     }
 
         if (error !== '') {
