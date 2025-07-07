@@ -87,13 +87,17 @@ export class PessoaRepository implements IPessoaRepository {
         }
     }
 
-    async filterAllPessoas(): Promise<PessoaEntity[]> {
-        const query = "SELECT * FROM pessoa";
+    async filterPessoaByEmail(email: string): Promise<PessoaEntity | null> {
+        const query = "SELECT * FROM pessoa WHERE email = ?";
         try {
-            const resultado = await executarComandoSQL(query, []);
-            return resultado.map((row: any) => new PessoaEntity(row.id, row.name, row.email));
-        } catch (err: any) {
-            console.error(`Erro ao listar as pessoas: ${err}`);
+            const resultado = await executarComandoSQL(query, [email]);
+            if (resultado.length > 0) {
+                const row = resultado[0];
+                return new PessoaEntity(row.id, row.name, row.email);
+            }
+            return null; // Nenhum usuário encontrado com este e-mail
+        } catch (err) {
+            console.error(`Erro ao procurar a pessoa com email ${email}:`, err);
             throw err;
         }
     }

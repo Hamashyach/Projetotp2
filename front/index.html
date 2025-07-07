@@ -3,51 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Biblioteca</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Login - Sistema de Biblioteca</title>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f2f5;
+        }
+        .login-container {
+            padding: 2.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            background-color: white;
+            width: 320px;
+            text-align: center;
+        }
+        .login-container h1 {
+            margin-bottom: 1.5rem;
+        }
+        .error-message {
+            color: #d93025;
+            margin-top: 1rem;
+            display: none;
+        }
+    </style>
 </head>
 <body>
-    <h1>Sistema de Biblioteca</h1>
-
-    <div class="container">
-        <div class="section">
-            <h2>Pessoas</h2>
-            <form id="form-pessoa">
-                <input type="text" id="pessoa-nome" placeholder="Nome da Pessoa" required>
-                <input type="email" id="pessoa-email" placeholder="Email" required>
-                <button type="submit">Cadastrar Pessoa</button>
-            </form>
-            <h3>Pessoas Cadastradas</h3>
-            <ul id="lista-pessoas"></ul>
-        </div>
-
-        <div class="section">
-            <h2>Categorias</h2>
-            <form id="form-categoria">
-                <input type="text" id="categoria-nome" placeholder="Nome da Categoria" required>
-                <button type="submit">Cadastrar Categoria</button>
-            </form>
-            <h3>Categorias Cadastradas</h3>
-            <ul id="lista-categorias"></ul>
-        </div>
+    <div class="login-container">
+        <h1>Sistema da Biblioteca</h1>
+        <form id="form-login">
+             <input type="email" id="login-email" placeholder="E-mail" required>
+             <input type="password" id="login-senha" placeholder="Senha" required>
+             <button type="submit">Entrar</button>
+        </form>
+        <a href="cadastro.html" class="register-link">Quero me cadastrar</a>
+        <p id="error-message" class="error-message"></p>
     </div>
 
-    <div class="container">
-        <div class="section">
-            <h2>Livros</h2>
-            <form id="form-livro">
-                <input type="text" id="livro-titulo" placeholder="Título do Livro" required>
-                <input type="text" id="livro-autor" placeholder="Autor" required>
-                <select id="livro-categoria" required>
-                    <option value="">Selecione uma Categoria</option>
-                </select>
-                <button type="submit">Cadastrar Livro</button>
-            </form>
-            <h3>Livros Cadastrados</h3>
-            <ul id="lista-livros"></ul>
-        </div>
-    </div>
-    
-    <script src="script.js"></script>
+    <script src="login.js"></script> 
 </body>
 </html>

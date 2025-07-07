@@ -76,7 +76,7 @@ export class UsuarioRepository{
         }
     }
 
-    async filterusuarioById(id: number):Promise<UsuarioEntity>{
+    async filterusuarioById(id: number):Promise<UsuarioEntity | null> { 
         const query = "SELECT * FROM usuario where id = ?";
 
         try {
@@ -103,6 +103,25 @@ export class UsuarioRepository{
             })
         } catch (err:any){
             console.error(`Falha ao listar os usuarios gerando o erro: ${err}`);
+            throw err;
+        }
+    }
+
+     async findUsuarioByEmail(email: string): Promise<UsuarioEntity | null> {
+        const query = `
+            SELECT u.* FROM usuario u
+            JOIN pessoa p ON u.idPessoa = p.id
+            WHERE p.email = ?
+        `;
+
+        try {
+            const resultado = await executarComandoSQL(query, [email]);
+            if (resultado.length > 0) {
+                return resultado[0] as UsuarioEntity;
+            }
+            return null; // Retorna nulo se não encontrar
+        } catch (err) {
+            console.error(`Falha ao procurar usuário com email ${email}:`, err);
             throw err;
         }
     }

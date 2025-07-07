@@ -8,23 +8,22 @@ import { ILoginService } from "../service/ILoginService";
 @Route("login")
 @Tags("Autenticação")
 export class LoginController extends Controller {
-    // Usamos o Proxy em vez do serviço real
     private loginService: ILoginService = new LoginServiceProxy(new LoginService());
 
     @Post()
     public async login(
-        @Body() dto: LoginRequestDto,
+        @Body() dto: LoginRequestDto, // O DTO já foi atualizado
         @Res() unauthorized: TsoaResponse<401, BasicResponseDto>,
         @Res() success: TsoaResponse<200, BasicResponseDto>
     ): Promise<void> {
         try {
-            const usuario = await this.loginService.login(dto.idPessoa, dto.senha);
+            // Passa email e senha para o serviço
+            const usuario = await this.loginService.login(dto.email, dto.senha);
 
             if (usuario) {
-                // Em um cenário real, aqui você geraria um token JWT
                 return success(200, new BasicResponseDto("Login bem-sucedido!", { id: usuario.id, idPessoa: usuario.idPessoa }));
             } else {
-                return unauthorized(401, new BasicResponseDto("ID da pessoa ou senha inválidos.", undefined));
+                return unauthorized(401, new BasicResponseDto("E-mail ou senha inválidos.", undefined));
             }
         } catch (error: any) {
             return unauthorized(401, new BasicResponseDto(error.message, undefined));

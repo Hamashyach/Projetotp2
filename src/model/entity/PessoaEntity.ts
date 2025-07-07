@@ -11,14 +11,19 @@ export class PessoaEntity{
         this.email = email || '';
     }
 
-        private validatesInformation(name: any, email: any){
-            let error ='';
-            if (typeof name !== 'string' || typeof email !== 'string'){
-                error +=("Informações incompletas ou incorretas");
-            }
-
-            if(error !== ''){
-                throw new Error(error);
-            }
+    private validatesInformation(name: any, email: any){
+        let error ='';
+        if (typeof name !== 'string' || typeof email !== 'string'){
+            error +=("Informações incompletas ou incorretas");
         }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (typeof email === 'string' && !emailRegex.test(email)) {
+            error += "O formato do e-mail é inválido. ";
+        }
+
+        if(error !== ''){
+            throw new Error(error);
+        }
+    }
 }

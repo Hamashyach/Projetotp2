@@ -1,25 +1,30 @@
-import express from "express";
-import path from "path"; // Garanta que o 'path' está importado
-import { RegisterRoutes } from "./route/routes";
-import { setupSwagger } from "./config/swagger";
-
+import express, { Request, Response, NextFunction } from 'express';
+import path from 'path';
+import { RegisterRoutes } from './route/routes';
+import { setupSwagger } from './config/swagger';
 
 const app = express();
 const PORT = 3040;
 
 app.use(express.json());
 
-// 1. SERVIR ARQUIVOS ESTÁTICOS (HTML, CSS, JS do Frontend)
-// Esta linha DEVE vir ANTES da configuração das rotas da API.
-app.use(express.static(path.join(__dirname, '../../public')));
+const projectRoot = process.cwd();
+const frontEndPath = path.join(projectRoot, 'front');
 
-// 2. CONFIGURAR AS ROTAS DA API
+app.use(express.static(frontEndPath));
+
 const apiRouter = express.Router();
 RegisterRoutes(apiRouter);
-app.use('/api', apiRouter); // Todas as rotas da API começarão com /api
+app.use('/api', apiRouter);
 
-// 3. CONFIGURAR O SWAGGER
+//app.get('/', (req: Request, res: Response) => {
+      ///res.sendFile(path.join(frontEndPath, 'login.html'));
+//});
+
 setupSwagger(app);
 
-// 4. INICIAR O SERVIDOR
-app.listen(PORT, ()=> console.log(`API online na porta: ${PORT}. Acesse o frontend em http://localhost:${PORT}/index.html`));
+app.listen(PORT, () => {
+    console.log(`Servidor pronto e rodando na porta: ${PORT}`);
+    console.log(`Acesse o frontend em: http://localhost:${PORT}/`);
+    console.log(`Veja a documentação da API em: http://localhost:${PORT}/api-docs`);
+});

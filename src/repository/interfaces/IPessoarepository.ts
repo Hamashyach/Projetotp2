@@ -7,4 +7,5 @@ export interface IPessoaRepository {
     filterPessoaById(id: number): Promise<PessoaEntity | null>;
     filterPessoaByName(name: string): Promise<PessoaEntity[]>;
     filterAllPessoas(): Promise<PessoaEntity[]>;
+    filterPessoaByEmail(email: string): Promise<PessoaEntity | null>;
 }

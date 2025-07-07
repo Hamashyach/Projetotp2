@@ -1,9 +1,9 @@
 export class LoginRequestDto {
-    idPessoa: number;
+    email: string;
     senha: string;
 
-    constructor(idPessoa?: number, senha?: string) {
-        this.idPessoa = idPessoa || 0;
+    constructor(email?: string, senha?: string) {
+        this.email = email || '';
         this.senha = senha || '';
     }
 }

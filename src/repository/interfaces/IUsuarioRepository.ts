@@ -7,4 +7,5 @@ export interface IUsuarioRepository {
     filterusuarioById(id: number): Promise<UsuarioEntity | null>;
     filterAllUsuarios(): Promise<UsuarioEntity[]>;
     filterUsuarioByIdPessoa(idPessoa: number): Promise<UsuarioEntity | null>;
+    findUsuarioByEmail(email: string): Promise<UsuarioEntity | null>;
 }
