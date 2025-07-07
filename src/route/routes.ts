@@ -82,7 +82,7 @@ const models: TsoaRoute.Models = {
     "LoginRequestDto": {
         "dataType": "refObject",
         "properties": {
-            "idPessoa": {"dataType":"double","required":true},
+            "email": {"dataType":"string","required":true},
             "senha": {"dataType":"string","required":true},
         },
         "additionalProperties": false,

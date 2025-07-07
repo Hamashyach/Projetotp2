@@ -133,4 +133,32 @@ export class EmprestimoRepository implements IEmprestimoRepository {
             throw err;
         }
     }
+
+    async filterEmprestimosByNomePessoa(nome: string): Promise<EmprestimoEntity[]> {
+        const query = `
+            SELECT e.* FROM emprestimo e
+            JOIN usuario u ON e.usuarioId = u.id
+            JOIN pessoa p ON u.idPessoa = p.id
+            WHERE p.name LIKE ?
+        `;
+        // Usamos '%' para permitir buscas parciais (ex: "João" encontra "João da Silva")
+        try {
+            const resultado = await executarComandoSQL(query, [`%${nome}%`]);
+            return resultado;
+        } catch (err) {
+            console.error(`Erro ao filtrar empréstimos por nome de pessoa:`, err);
+            throw err;
+        }
+    }
+
+    async filterEmprestimosByData(data: Date): Promise<EmprestimoEntity[]> {
+        const query = "SELECT * FROM emprestimo WHERE dataEmprestimo = ?";
+        try {
+            const resultado = await executarComandoSQL(query, [data]);
+            return resultado;
+        } catch (err) {
+            console.error(`Erro ao filtrar empréstimos por data:`, err);
+            throw err;
+        }
+    }
 }

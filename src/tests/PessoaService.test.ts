@@ -10,12 +10,12 @@ const mockPessoaRepository: IPessoaRepository = {
     deletarPessoa: jest.fn(),
     filterPessoaById: jest.fn(),
     filterPessoaByName: jest.fn(),
+    findPessoaByEmail: jest.fn(), // Método que estava faltando no mock
     filterAllPessoas: jest.fn(),
 };
 
 const mockRepositoryFactory: IRepositoryFactory = {
     createPessoaRepository: () => mockPessoaRepository,
-    // As outras funções da fábrica podem ser mockadas se necessário
     createCategoriaRepository: jest.fn(),
     createEmprestimoRepository: jest.fn(),
     createLivroRepository: jest.fn(),
@@ -26,30 +26,26 @@ const mockRepositoryFactory: IRepositoryFactory = {
 describe('PessoaService', () => {
     let pessoaService: PessoaService;
 
-    // Roda antes de cada teste no 'describe'
     beforeEach(() => {
-        // Reseta os mocks para garantir que um teste não interfira no outro
         jest.clearAllMocks();
-        // Cria uma nova instância do serviço com a fábrica mockada
         pessoaService = new PessoaService(mockRepositoryFactory);
     });
 
     it('deve cadastrar uma nova pessoa com sucesso', async () => {
-        // Arrange (Preparação)
+        // Arrange
         const novaPessoa = { name: 'João Teste', email: 'joao@teste.com' };
         const pessoaCriada = new PessoaEntity(1, 'João Teste', 'joao@teste.com');
         
-        // Configura o mock para retornar a pessoa criada quando insertPessoa for chamado
+        (mockPessoaRepository.findPessoaByEmail as jest.Mock).mockResolvedValue(null);
         (mockPessoaRepository.insertPessoa as jest.Mock).mockResolvedValue(pessoaCriada);
 
-        // Act (Ação)
+        // Act
         const resultado = await pessoaService.cadastrarPessoa(novaPessoa);
 
-        // Assert (Verificação)
+        // Assert
         expect(resultado).toBeDefined();
         expect(resultado.id).toBe(1);
         expect(resultado.name).toBe('João Teste');
-        // Verifica se o método do repositório foi chamado corretamente
         expect(mockPessoaRepository.insertPessoa).toHaveBeenCalledTimes(1);
     });
 
@@ -76,5 +72,19 @@ describe('PessoaService', () => {
         // Assert
         expect(resultado).toBeNull();
         expect(mockPessoaRepository.filterPessoaById).toHaveBeenCalledWith(99);
+    });
+
+    it('deve lançar um erro ao tentar cadastrar um e-mail que já existe', async () => {
+        // Arrange
+        const pessoaExistente = { name: 'João Teste', email: 'joao@teste.com' };
+        
+        (mockPessoaRepository.findPessoaByEmail as jest.Mock).mockResolvedValue(new PessoaEntity(1, 'João Antigo', 'joao@teste.com'));
+
+        // Act & Assert
+        await expect(pessoaService.cadastrarPessoa(pessoaExistente))
+            .rejects
+            .toThrow("O e-mail 'joao@teste.com' já está em uso.");
+
+        expect(mockPessoaRepository.insertPessoa).not.toHaveBeenCalled();
     });
 });

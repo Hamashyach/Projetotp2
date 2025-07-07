@@ -3,51 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Biblioteca</title>
+    <title>Administração - Sistema de Biblioteca</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Sistema de Biblioteca</h1>
+    <div class="main-container admin-container">
+        <h1>Painel de Administração</h1>
 
-    <div class="container">
-        <div class="section">
-            <h2>Pessoas</h2>
-            <form id="form-pessoa">
-                <input type="text" id="pessoa-nome" placeholder="Nome da Pessoa" required>
-                <input type="email" id="pessoa-email" placeholder="Email" required>
-                <button type="submit">Cadastrar Pessoa</button>
-            </form>
-            <h3>Pessoas Cadastradas</h3>
-            <ul id="lista-pessoas"></ul>
+        <div class="tab-container">
+            <button class="tab-button active" data-tab="tab-pessoas">Pessoas</button>
+            <button class="tab-button" data-tab="tab-categorias">Categorias</button>
+            <button class="tab-button" data-tab="tab-livros">Livros</button>
+            <button class="tab-button" data-tab="tab-emprestimos">Empréstimos</button>
+        </div>
+        <body>
+            
+    <div id="notification" class="notification"></div>
+    <div class="main-container admin-container">
+    ...
+
+        <div id="tab-pessoas" class="tab-content active">
+            <div class="section-container">
+                <div class="section">
+                    <h2>Cadastrar Nova Pessoa</h2>
+                    <form id="form-pessoa">
+                        <input type="text" id="pessoa-nome" placeholder="Nome da Pessoa" required>
+                        <input type="email" id="pessoa-email" placeholder="Email" required>
+                        <button type="submit">Cadastrar</button>
+                    </form>
+                </div>
+                <div class="section">
+                    <h2>Pessoas Cadastradas</h2>
+                    <div class="search-container">
+                        <input type="text" id="filtro-pessoas" placeholder="Filtrar por nome...">
+                        <button type="button" id="btn-filtro-pessoas" class="filter-button">Filtrar</button>
+                    </div>
+                    <ul id="lista-pessoas"></ul>
+                </div>
+            </div>
         </div>
 
-        <div class="section">
-            <h2>Categorias</h2>
-            <form id="form-categoria">
-                <input type="text" id="categoria-nome" placeholder="Nome da Categoria" required>
-                <button type="submit">Cadastrar Categoria</button>
-            </form>
-            <h3>Categorias Cadastradas</h3>
-            <ul id="lista-categorias"></ul>
+        <div id="tab-categorias" class="tab-content">
+            <div class="section-container">
+                <div class="section">
+                    <h2>Cadastrar Nova Categoria</h2>
+                    <form id="form-categoria">
+                        <input type="text" id="categoria-nome" placeholder="Nome da Categoria" required>
+                        <button type="submit">Cadastrar</button>
+                    </form>
+                </div>
+                <div class="section">
+                    <h2>Categorias Cadastradas</h2>
+                    <div class="search-container">
+                        <input type="text" id="filtro-categorias" placeholder="Filtrar por nome...">
+                        <button type="button" id="btn-filtro-categorias" class="filter-button">Filtrar</button>
+                    </div>
+                    <ul id="lista-categorias"></ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-livros" class="tab-content">
+            <div class="section-container">
+                <div class="section">
+                    <h2>Cadastrar Novo Livro</h2>
+                    <form id="form-livro">
+                        <input type="text" id="livro-titulo" placeholder="Título do Livro" required>
+                        <input type="text" id="livro-autor" placeholder="Autor" required>
+                        <select id="livro-categoria" required><option value="">Selecione uma Categoria</option></select>
+                        <button type="submit">Cadastrar</button>
+                        <button type="button" id="undo-livro" style="background-color: #ffc107; margin-top: 10px;">Desfazer Último</button>
+                    </form>
+                </div>
+                <div class="section">
+                    <h2>Livros Cadastrados</h2>
+                    <div class="search-container">
+                        <input type="text" id="filtro-livros" placeholder="Filtrar por título...">
+                        <button type="button" id="btn-filtro-livros" class="filter-button">Filtrar</button>
+                    </div>
+                    <ul id="lista-livros"></ul>
+                </div>
+            </div>
+        </div>
+        
+        <div id="tab-emprestimos" class="tab-content">
+            <div class="section-container">
+                <div class="section">
+                    <h2>Registrar Novo Empréstimo</h2>
+                    <form id="form-emprestimo">
+                        <select id="emprestimo-livro" required><option value="">Selecione um Livro</option></select>
+                        <select id="emprestimo-usuario" required><option value="">Selecione um Usuário</option></select>
+                        <input type="text" id="emprestimo-data-emprestimo" placeholder="Data Empréstimo (dd/mm/aaaa)" required>
+                        <input type="text" id="emprestimo-data-devolucao" placeholder="Data Devolução (dd/mm/aaaa)" required>
+                        <button type="submit">Registrar</button>
+                    </form>
+                </div>
+                <div class="section">
+                    <h2>Empréstimos Ativos</h2>
+                    <ul id="lista-emprestimos"></ul>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="container">
-        <div class="section">
-            <h2>Livros</h2>
-            <form id="form-livro">
-                <input type="text" id="livro-titulo" placeholder="Título do Livro" required>
-                <input type="text" id="livro-autor" placeholder="Autor" required>
-                <select id="livro-categoria" required>
-                    <option value="">Selecione uma Categoria</option>
-                </select>
-                <button type="submit">Cadastrar Livro</button>
-            </form>
-            <h3>Livros Cadastrados</h3>
-            <ul id="lista-livros"></ul>
-        </div>
-    </div>
-    
     <script src="admin.js"></script>
 </body>
 </html>

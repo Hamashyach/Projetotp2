@@ -1,9 +1,13 @@
 import { IRepositoryFactory } from "../patterns/factory/IRepositoryFactory";
 import { PessoaEntity } from "../model/entity/PessoaEntity";
 import { IPessoaRepository } from "../repository/interfaces/IPessoarepository";
+import { PessoaRepository } from "../repository/PessoaRepository";
 
 export class PessoaService {
     private pessoaRepository: IPessoaRepository;
+
+    private bcrypt = require('bcrypt');
+    private saltRounds = 10
 
     constructor(factory: IRepositoryFactory) {
         this.pessoaRepository = factory.createPessoaRepository();
@@ -11,6 +15,7 @@ export class PessoaService {
 
     async cadastrarPessoa(pessoaData: any): Promise<PessoaEntity> {
         const { name, email } = pessoaData;
+
         const emailExistente = await this.pessoaRepository.findPessoaByEmail(email);
         if (emailExistente) {
             throw new Error(`O e-mail '${email}' já está em uso.`);

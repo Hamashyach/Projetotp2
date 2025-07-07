@@ -96,4 +96,14 @@ export class EmprestimoService {
         return await this.emprestimoRepository.filterAllEmprestimos();
     }
 
+    async filtrarEmprestimosPorNome(nome: string): Promise<EmprestimoEntity[]> {
+        return await this.emprestimoRepository.filterEmprestimosByNomePessoa(nome);
+    }
+
+    async filtrarEmprestimosPorData(data: string): Promise<EmprestimoEntity[]> {
+        
+        const dataFiltro = new Date(data);
+        return await this.emprestimoRepository.filterEmprestimosByData(dataFiltro);
+    }
+
 }

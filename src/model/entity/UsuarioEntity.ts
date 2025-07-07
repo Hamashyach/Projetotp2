@@ -13,20 +13,17 @@ export class UsuarioEntity {
     private validatesInformation(idPessoa: any, senha: any) {
         let error = '';
         if (typeof idPessoa !== 'number' || typeof senha !== 'string') {
-            error += ("Informações incompletas ou incorretas. ");
+            error += ("Informações incompletas ou incorretas");
         }
 
-        if (typeof senha === 'string') {
-            if (senha.length < 8) {
-                error += "A senha deve ter pelo menos 8 caracteres. ";
-            }
-            if (!/[a-z]/.test(senha) || !/[A-Z]/.test(senha) || !/\d/.test(senha)) {
-                error += "A senha deve conter letras maiúsculas, minúsculas e números. ";
-            }
-        }
+        if (typeof senha === 'string' && senha.length < 6) {
+        error += "A senha deve ter pelo menos 6 caracteres. ";
+    }
 
         if (error !== '') {
             throw new Error(error);
         }
     }
 }
+
+

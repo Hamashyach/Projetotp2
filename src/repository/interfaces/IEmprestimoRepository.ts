@@ -8,5 +8,7 @@ export interface IEmprestimoRepository {
     filterAllEmprestimos(): Promise<EmprestimoEntity[]>;
     countEmprestimosByUsuarioId(usuarioId: number): Promise<number>;
     findAtivoByLivroId(livroId: number): Promise<EmprestimoEntity | null>;
+    filterEmprestimosByNomePessoa(nome: string): Promise<EmprestimoEntity[]>;
+    filterEmprestimosByData(data: Date): Promise<EmprestimoEntity[]>;
 
 }

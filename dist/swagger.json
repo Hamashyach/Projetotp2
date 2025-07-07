@@ -119,16 +119,15 @@
 			},
 			"LoginRequestDto": {
 				"properties": {
-					"idPessoa": {
-						"type": "number",
-						"format": "double"
+					"email": {
+						"type": "string"
 					},
 					"senha": {
 						"type": "string"
 					}
 				},
 				"required": [
-					"idPessoa",
+					"email",
 					"senha"
 				],
 				"type": "object",

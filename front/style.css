@@ -1,6 +1,7 @@
+/* --- ESTILOS GERAIS E TEMA --- */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f0f2f5; /* Cor de fundo unificada (igual ao login) */
     color: #333;
     line-height: 1.6;
     margin: 0;
@@ -8,46 +9,29 @@ body {
 }
 
 h1, h2, h3 {
-    color: #0056b3;
-}
-
-.container {
-    display: flex;
-    gap: 20px;
-    margin-bottom: 20px;
-}
-
-.section {
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    flex: 1;
-}
-
-form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 20px;
+    color: #0056b3; /* Tom de azul para títulos */
 }
 
 input, select, button {
-    padding: 10px;
-    border-radius: 5px;
+    padding: 12px;
+    border-radius: 8px;
     border: 1px solid #ddd;
+    font-size: 16px;
+    width: 100%;
+    box-sizing: border-box; /* Garante que padding não afete a largura total */
 }
 
 button {
     background-color: #007bff;
     color: white;
+    font-weight: bold;
     border: none;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: #0056b3; /* Cor de hover unificada */
 }
 
 ul {
@@ -57,11 +41,148 @@ ul {
 
 li {
     background: #e9ecef;
-    margin-bottom: 5px;
-    padding: 10px;
+    margin-bottom: 8px;
+    padding: 10px 15px;
     border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
+/* --- CONTAINER PRINCIPAL (Login e Admin) --- */
+.main-container {
+    max-width: 900px; /* Largura máxima para a área de conteúdo */
+    margin: 40px auto; /* Centraliza na página */
+    padding: 2.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    background-color: white;
+    text-align: center;
+}
+
+.admin-container h1 {
+    margin-bottom: 2rem;
+}
+
+/* --- ABAS DE NAVEGAÇÃO --- */
+.tab-container {
+    display: flex;
+    justify-content: center;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 20px;
+}
+
+.tab-button {
+    background-color: transparent;
+    color: #007bff;
+    border: none;
+    border-bottom: 3px solid transparent;
+    padding: 14px 16px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 500;
+    transition: 0.3s;
+    width: auto; /* Remove a largura total */
+    margin: 0 5px;
+}
+
+.tab-button:hover {
+    background-color: #e9ecef;
+    border-bottom: 3px solid #007bff;
+}
+
+.tab-button.active {
+    border-bottom: 3px solid #0056b3;
+    color: #0056b3;
+}
+
+.tab-content {
+    display: none; /* Oculta por padrão */
+}
+
+/* Mostra a aba ativa */
+.tab-content.active {
+    display: block;
+}
+
+/* --- SEÇÕES E FORMULÁRIOS --- */
+.section-container {
+    display: flex;
+    gap: 30px;
+}
+
+.section {
+    background: #fdfdfd;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+    flex: 1; /* Permite que as seções dividam o espaço */
+    min-width: 300px; /* Largura mínima antes de quebrar a linha */
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 1rem;
+}
+
+/* --- BOTÕES DE AÇÃO NA LISTA --- */
+.action-button {
+    margin-left: 10px;
+    padding: 6px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    width: auto; /* Para não ocupar a linha inteira */
+    flex-shrink: 0; /* Impede que o botão encolha */
+}
+
+.delete-button {
+    background-color: #dc3545;
+}
+.delete-button:hover {
+    background-color: #c82333;
+}
+
+/* --- MODAL DE EDIÇÃO --- */
+.modal {
+    display: none; /* Oculto por padrão */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 30px;
+    border: 1px solid #888;
+    width: 90%;
+    max-width: 500px;
+    border-radius: 10px;
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* --- LINKS E MENSAGENS --- */
 .register-link {
     display: block;
     margin-top: 15px;
@@ -69,7 +190,52 @@ li {
     text-decoration: none;
     font-size: 14px;
 }
-
 .register-link:hover {
     text-decoration: underline;
+}
+
+.error-message {
+    color: #d93025;
+    margin-top: 1rem;
+    display: none; /* Oculto por padrão */
+    font-weight: 500;
+}
+
+/* --- RESPONSIVIDADE --- */
+@media (max-width: 768px) {
+    .section-container {
+        flex-direction: column; /* Empilha as seções em telas menores */
+    }
+
+    .main-container {
+        margin: 20px;
+        padding: 1.5rem;
+    }
+
+    .tab-container {
+        flex-wrap: wrap; /* Permite que os botões quebrem a linha */
+    }
+
+    /* --- ESTILOS PARA NOTIFICAÇÕES --- */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 25px;
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    z-index: 2000;
+    display: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.notification.success {
+    background-color: #28a745; /* Verde para sucesso */
+}
+
+.notification.error {
+    background-color: #dc3545; /* Vermelho para erro */
+}
 }

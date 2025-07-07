@@ -16,8 +16,14 @@ export class PessoaEntity{
         if (typeof name !== 'string' || typeof email !== 'string'){
             error +=("Informações incompletas ou incorretas");
         }
+        if (typeof this.name !== 'string' || this.name.trim().length === 0) {
+            throw new Error("O nome da pessoa é obrigatório.");
+        }
+        if (typeof this.email !== 'string' || this.email.trim().length === 0) {
+            throw new Error("O e-mail da pessoa é obrigatório.");
+        }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (typeof email === 'string' && !emailRegex.test(email)) {
             error += "O formato do e-mail é inválido. ";
         }
